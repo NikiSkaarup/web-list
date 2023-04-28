@@ -1,0 +1,122 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "id": "006ecddd-c77e-4b3b-9e8c-3ccb772971c3",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "items": {
+      "name": "items",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hash": {
+          "name": "hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dt": {
+          "name": "dt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cat": {
+          "name": "cat",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "size": {
+          "name": "size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ext_id": {
+          "name": "ext_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "imdb": {
+          "name": "imdb",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "ix__id": {
+          "name": "ix__id",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        },
+        "ix__title": {
+          "name": "ix__title",
+          "columns": [
+            "title"
+          ],
+          "isUnique": false
+        },
+        "ix__dt": {
+          "name": "ix__dt",
+          "columns": [
+            "dt"
+          ],
+          "isUnique": false
+        },
+        "ix__cat": {
+          "name": "ix__cat",
+          "columns": [
+            "cat"
+          ],
+          "isUnique": false
+        },
+        "ix__size": {
+          "name": "ix__size",
+          "columns": [
+            "size"
+          ],
+          "isUnique": false
+        },
+        "ix__ext_id": {
+          "name": "ix__ext_id",
+          "columns": [
+            "ext_id"
+          ],
+          "isUnique": false
+        },
+        "ix__imdb": {
+          "name": "ix__imdb",
+          "columns": [
+            "imdb"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
