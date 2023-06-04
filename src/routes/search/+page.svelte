@@ -8,16 +8,18 @@
 
 	let items = data.items;
 	let div: HTMLDivElement;
+
 	const sort: {
-		by: 'dt' | 'title' | 'size' | 'cat' | 'imdb' | 'ext_id';
+		by: sortBy;
 		asc: boolean;
 	} = {
-		by: 'dt',
-		asc: false
+		by: data.by,
+		asc: data.asc
 	};
+
 	let settings = {
-		offset: 0,
-		limit: 10,
+		offset: data.offset,
+		limit: data.limit,
 		size: data.total,
 		amounts: [10, 25, 50, 100]
 	};
@@ -50,7 +52,7 @@
 		abortController = new AbortController();
 
 		try {
-			let params = `?order=${sort.by}&asc=${sort.asc}&limit=${settings.limit}&offset=${settings.offset}`;
+			let params = `?by=${sort.by}&asc=${sort.asc}&limit=${settings.limit}&offset=${settings.offset}`;
 
 			const inputs = getInputs();
 			const categories = inputs.categories.map((input) => (input as HTMLInputElement).value);
@@ -117,10 +119,11 @@
 						on:change={onChange}
 						class="filter-checkbox checkbox"
 						type="checkbox"
-						value={category}
+						value={category.name}
+						checked={category.checked}
 						name="categories"
 					/>
-					<p>{category}</p>
+					<p>{category.name}</p>
 				</label>
 			{/each}
 		</div>

@@ -80,7 +80,7 @@ export const GET = async (event) => {
 
 	const groupBy = event.url.searchParams.get('group-by');
 	const imdb = event.url.searchParams.get('imdb');
-	const order = event.url.searchParams.get('order') || 'dt';
+	const by = event.url.searchParams.get('by') || 'dt';
 	const asc = event.url.searchParams.get('asc') === 'true';
 	const limitString = event.url.searchParams.get('limit') || '10';
 	const offsetString = event.url.searchParams.get('offset') || '0';
@@ -94,7 +94,7 @@ export const GET = async (event) => {
 		return json({ error: 'Invalid group-by' });
 	if (imdb !== null && !imdbMatcher.test(imdb)) return json({ error: 'Invalid imdb' });
 
-	const items = await getItems(searchCategories, order, asc, limit, offset, title, groupBy, imdb);
+	const items = await getItems(searchCategories, by, asc, limit, offset, title, groupBy, imdb);
 	const total = await getTotal(searchCategories, title, groupBy, imdb);
 
 	return json({ items, total: total.count });

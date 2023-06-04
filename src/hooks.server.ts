@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
 import db from '$lib/server/db';
 import { items } from '$lib/server/db/schema';
+import { sql } from 'drizzle-orm';
 
 const stringReplace = (str: string, toFind: string, replaceValue: string) => {
 	const index = str.indexOf(toFind);
@@ -13,7 +14,9 @@ const stringReplace = (str: string, toFind: string, replaceValue: string) => {
 
 export const handle = async ({ event, resolve }) => {
 	if (!global.drizzleDb) {
-		db.select().from(items).limit(0).all();
+		db.select({ count: sql`count(*)` })
+			.from(items)
+			.get();
 	}
 
 	event.locals.requestStart = performance.now();
