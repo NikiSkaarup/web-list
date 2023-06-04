@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '@catppuccin/highlightjs/css/catppuccin-mocha.css';
-	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
+	// import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 	// import '@skeletonlabs/skeleton/themes/theme-modern.css';
 	// import '@skeletonlabs/skeleton/themes/theme-rocket.css';
 	// import '@skeletonlabs/skeleton/themes/theme-seafoam.css';
@@ -9,6 +9,7 @@
 	// import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
 	// import '@skeletonlabs/skeleton/themes/theme-gold-nouveau.css';
 	// import '@skeletonlabs/skeleton/themes/theme-crimson.css';
+	import '../theme.postcss';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
 	import {
@@ -20,16 +21,12 @@
 		Drawer
 	} from '@skeletonlabs/skeleton';
 	import Perf from '$lib/ui/perf.svelte';
-	import { createPerfStore } from '$lib/stores/perf';
 	import { storeHighlightJs, storePopup } from '@skeletonlabs/skeleton';
 	import hljs from 'highlight.js';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 
 	storeHighlightJs.set(hljs);
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
-
-	export let data;
-	createPerfStore(data.layoutDuration);
 </script>
 
 <svelte:head>

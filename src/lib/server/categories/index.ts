@@ -1,6 +1,6 @@
-import { sql } from "drizzle-orm";
-import { items } from "../db/schema";
-import db from "$lib/server/db";
+import { sql } from 'drizzle-orm';
+import { items } from '../db/schema';
+import db from '$lib/server/db';
 
 const categoriesSelect = db
 	.select({ cat: items.cat })
