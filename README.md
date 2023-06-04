@@ -1,6 +1,6 @@
 # Web-list
 
-reads a specific sqlite database and lets you search for content with filters
+reads a specific sqlite database (made by reddit user [u/BenevolentCheese](https://www.reddit.com/u/BenevolentCheese/) ) and lets you search for content with filters
 
 ## Installation
 
