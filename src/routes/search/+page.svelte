@@ -161,6 +161,7 @@
 					type="radio"
 					name="group-by"
 					value="imdb"
+					checked={data.groupBy === 'imdb'}
 				/>
 				<p>group by IMDB</p>
 			</label>
@@ -171,6 +172,7 @@
 					type="radio"
 					name="group-by"
 					value="extId"
+					checked={data.groupBy === 'extId'}
 				/>
 				<p>group by EXT ID</p>
 			</label>

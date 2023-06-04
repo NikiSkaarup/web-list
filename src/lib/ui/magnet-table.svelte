@@ -64,7 +64,7 @@
 					class:table-sort-asc={sort.by === 'cat' && sort.asc}
 					class:table-sort-desc={sort.by === 'cat' && !sort.asc}
 				>
-					cat
+					category
 				</th>
 				<th
 					on:click={setSort('size')}
