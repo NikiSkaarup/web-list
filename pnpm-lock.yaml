@@ -38,6 +38,9 @@ devDependencies:
   '@tailwindcss/forms':
     specifier: ^0.5.3
     version: 0.5.3(tailwindcss@3.3.2)
+  '@types/better-sqlite3':
+    specifier: ^7.6.4
+    version: 7.6.4
   '@types/node':
     specifier: ^20.2.5
     version: 20.2.5
@@ -50,6 +53,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.24)
+  better-sqlite3:
+    specifier: ^8.4.0
+    version: 8.4.0
   dotenv:
     specifier: ^16.1.4
     version: 16.1.4
@@ -58,7 +64,7 @@ devDependencies:
     version: 0.18.1
   drizzle-orm:
     specifier: ^0.26.5
-    version: 0.26.5(@libsql/client@0.1.6)
+    version: 0.26.5(@libsql/client@0.1.6)(@types/better-sqlite3@7.6.4)(better-sqlite3@8.4.0)
   drizzle-zod:
     specifier: ^0.4.3
     version: 0.4.3(drizzle-orm@0.26.5)(zod@3.21.4)
@@ -668,6 +674,12 @@ packages:
 
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
+    dev: true
+
+  /@types/better-sqlite3@7.6.4:
+    resolution: {integrity: sha512-dzrRZCYPXIXfSR1/surNbJ/grU3scTaygS0OMzjlGf71i9sc2fGyHPXXiXmEvNIoE0cGwsanEFMVJxPXmco9Eg==}
+    dependencies:
+      '@types/node': 20.2.5
     dev: true
 
   /@types/cookie@0.5.1:
@@ -1285,7 +1297,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.26.5(@libsql/client@0.1.6):
+  /drizzle-orm@0.26.5(@libsql/client@0.1.6)(@types/better-sqlite3@7.6.4)(better-sqlite3@8.4.0):
     resolution: {integrity: sha512-ajjbOIoXqldWoWBn0RbVQCCT732R4Ad+gUjUrlmMpzWYwgnbG/qqPy84NhHntQ/MR//z3xfvT1Z2fD8uCAPX3g==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -1348,6 +1360,8 @@ packages:
         optional: true
     dependencies:
       '@libsql/client': 0.1.6
+      '@types/better-sqlite3': 7.6.4
+      better-sqlite3: 8.4.0
     dev: true
 
   /drizzle-zod@0.4.3(drizzle-orm@0.26.5)(zod@3.21.4):
@@ -1356,7 +1370,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.26.5(@libsql/client@0.1.6)
+      drizzle-orm: 0.26.5(@libsql/client@0.1.6)(@types/better-sqlite3@7.6.4)(better-sqlite3@8.4.0)
       zod: 3.21.4
     dev: true
 

@@ -22,7 +22,7 @@ const getOrderBy = (order: string, ascParam: boolean) => {
 	}
 };
 
-const getTotal = (
+const getTotal = async (
 	categories: string[],
 	title: string | null,
 	groupBy: 'imdb' | 'extId' | '' | null,
@@ -40,7 +40,7 @@ const getTotal = (
 	return query.get();
 };
 
-const getItems = (
+const getItems = async (
 	categories: string[],
 	order: string,
 	asc: boolean,
@@ -94,8 +94,8 @@ export const GET = async (event) => {
 		return json({ error: 'Invalid group-by' });
 	if (imdb !== null && !imdbMatcher.test(imdb)) return json({ error: 'Invalid imdb' });
 
-	const items = await getItems(searchCategories, by, asc, limit, offset, title, groupBy, imdb);
-	const total = await getTotal(searchCategories, title, groupBy, imdb);
-
+	const itemsPromise = getItems(searchCategories, by, asc, limit, offset, title, groupBy, imdb);
+	const totalPromise = getTotal(searchCategories, title, groupBy, imdb);
+	const [items, total] = await Promise.all([itemsPromise, totalPromise]);
 	return json({ items, total: total.count });
 };
