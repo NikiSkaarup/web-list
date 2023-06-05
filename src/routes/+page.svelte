@@ -96,7 +96,7 @@
 						checked={category.checked}
 						name="categories"
 					/>
-					<p>{category.name}</p>
+					<p class="font-mono">{category.name}</p>
 				</label>
 			{/each}
 		</div>

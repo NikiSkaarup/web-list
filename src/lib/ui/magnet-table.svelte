@@ -84,21 +84,23 @@
 								</span>
 							{/if}
 						</td>
-						<td class="table-cell-fit">
+						<td class="table-cell-fit font-mono">
 							<span class="whitespace-nowrap">{item.dt}</span>
 						</td>
-						<td class="table-cell-fit">{item.cat}</td>
-						<td class="table-cell-fit">
+						<td class="table-cell-fit font-mono">{item.cat}</td>
+						<td class="table-cell-fit font-mono">
 							<span class="whitespace-nowrap">{getSize(item.size)} GB</span>
 						</td>
-						<td class="table-cell-fit" title={item.ext_id}>
+						<td class="table-cell-fit font-mono" title={item.ext_id}>
 							<span
 								class="inline-block overflow-hidden whitespace-nowrap text-ellipsis max-w-[5rem]"
 							>
 								{item.ext_id ?? 'n/a'}
 							</span>
 						</td>
-						<td class="table-cell-fit" title={item.imdb}>{item.imdb ?? 'n/a'}</td>
+						<td class="table-cell-fit font-mono" title={item.imdb}
+							>{item.imdb ?? 'n/a'}</td
+						>
 						<td class="table-cell-fit">
 							<a href="magnet:?xt=urn:btih:{item.hash}">
 								<IconMagnet />
