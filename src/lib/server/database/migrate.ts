@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 import { migrate } from 'drizzle-orm/libsql/migrator';
+// import { drizzle } from 'drizzle-orm/better-sqlite3';
+// import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
+// import Database from 'better-sqlite3';
 import { z } from 'zod';
 
 const conf = dotenv.config();
@@ -15,6 +18,7 @@ const schema = z.object({
 const envs = schema.parse(conf.parsed);
 
 const client = createClient({ url: envs.DATABASE_URL, authToken: envs.DATABASE_AUTH_TOKEN });
+// const client = Database(envs.DATABASE_URL);
 export const db = drizzle(client);
 
 async function main() {

@@ -13,7 +13,7 @@ const stringReplace = (str: string, toFind: string, replaceValue: string) => {
 };
 
 export const handle = async ({ event, resolve }) => {
-	if (!global.betterSQLiteDb) {
+	if (!global.libSQLClient) {
 		database.db
 			.select({ count: sql`count(*)` })
 			.from(items)

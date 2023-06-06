@@ -113,16 +113,13 @@ const getItems = async (
 
 	if (groupImdb) {
 		wheres.push(isNotNull(items.imdb));
+		query = query.groupBy(items.imdb);
 	}
 
 	if (wheres.length > 1) {
 		query = query.where(and(...wheres));
 	} else if (wheres.length > 0) {
 		query = query.where(wheres[0]);
-	}
-
-	if (groupImdb) {
-		query = query.groupBy(items.imdb);
 	}
 
 	return query
