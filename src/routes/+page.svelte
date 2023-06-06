@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import MagnetTable from '$lib/ui/magnet-table.svelte';
-	import { Paginator } from '@skeletonlabs/skeleton';
+	import { Paginator, SlideToggle } from '@skeletonlabs/skeleton';
 	export let data;
 
 	$: items = data.items;
@@ -25,9 +25,10 @@
 	$: searchText = data.searchText ?? '';
 	$: loading = false;
 
-	const getValues = () => {
-		if (!div) return { categories: '', groupBy: '', title: '' };
+	let groupImdb = data.groupImdb;
 
+	const getCategories = () => {
+		if (!div) return '';
 		const checkboxes = Array.from(
 			div.querySelectorAll<HTMLInputElement>('.filter-checkbox:checked')
 		);
@@ -35,25 +36,19 @@
 			.filter((input) => input.name === 'categories')
 			.map((input) => `categories=${(input as HTMLInputElement).value}`)
 			.join('&');
-		const radio = Array.from(div.querySelectorAll<HTMLInputElement>('.filter-radio'));
-		const groupByArr = radio
-			.filter((input) => input.name === 'group-by')
-			.filter((input) => input.checked);
-
-		return {
-			categories,
-			groupBy: groupByArr.length > 0 ? groupByArr[0].value : ''
-		};
+		return categories;
 	};
 
 	const onChange = async () => {
 		loading = true;
-		const { categories, groupBy } = getValues();
+		const categories = getCategories();
 		let params = `?by=${sort.by}&asc=${sort.asc}&limit=${settings.limit}&offset=${settings.offset}`;
 
 		if (searchText.length > 0) params += `&search-text=${searchText}`;
 		if (categories.length > 0) params += `&${categories}`;
-		if (groupBy.length > 0) params += `&group-by=${groupBy}`;
+		if (groupImdb) params += `&group-imdb=${groupImdb}`;
+
+		console.log({ params, groupImdb });
 
 		await goto($page.url.pathname + params, {
 			keepFocus: true
@@ -65,14 +60,9 @@
 		const categories = Array.from(
 			div.querySelectorAll<HTMLInputElement>('.filter-checkbox:checked')
 		).filter((input) => input.name === 'categories');
-		const groupBy = Array.from(div.querySelectorAll<HTMLInputElement>('.filter-radio')).filter(
-			(input) => input.name === 'group-by'
-		);
+		groupImdb = false;
 		searchText = '';
 		categories.forEach((input) => {
-			input.checked = false;
-		});
-		groupBy.forEach((input) => {
 			input.checked = false;
 		});
 		settings.offset = 0;
@@ -117,41 +107,15 @@
 		</button>
 		<button class="btn variant-ghost-surface" type="reset" on:click={clear}> Clear </button>
 
-		<div class="flex flex-row flex-wrap gap-2">
-			<input
+		<div class="flex flex-row flex-wrap gap-2 items-center">
+			<SlideToggle
+				name="slider-label"
+				bind:checked={groupImdb}
 				on:change={onChange}
-				class="hidden filter-radio"
-				type="radio"
-				name="group-by"
-				checked={true}
-				value=""
-			/>
-			<label class="flex items-center space-x-2">
-				<input
-					on:change={onChange}
-					class="radio filter-radio"
-					type="radio"
-					name="group-by"
-					value="imdb"
-					class:cursor-not-allowed={true}
-					disabled={true}
-					checked={data.groupBy === 'imdb'}
-				/>
-				<p>group by IMDB</p>
-			</label>
-			<label class="flex items-center space-x-2">
-				<input
-					on:change={onChange}
-					class="radio filter-radio"
-					type="radio"
-					name="group-by"
-					value="extId"
-					class:cursor-not-allowed={true}
-					disabled={true}
-					checked={data.groupBy === 'extId'}
-				/>
-				<p>group by EXT ID</p>
-			</label>
+				active="bg-surface-500"
+			>
+				group by IMDB
+			</SlideToggle>
 		</div>
 	</div>
 

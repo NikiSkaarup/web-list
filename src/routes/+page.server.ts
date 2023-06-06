@@ -10,7 +10,7 @@ export const load = async (event) => {
 	const limit = Number(event.url.searchParams.get('limit'));
 	const offset = Number(event.url.searchParams.get('offset'));
 	const searchText = event.url.searchParams.get('search-text');
-	const groupBy = event.url.searchParams.get('group-by');
+	const groupImdb = event.url.searchParams.get('group-imdb') === 'true';
 
 	const response = await event.fetch('/api/items' + event.url.search);
 	const result: { items: (typeof selectItemSchema._type)[]; total: number } =
@@ -37,6 +37,6 @@ export const load = async (event) => {
 		limit: isNaN(limit) ? 10 : limit > 0 ? limit : 10,
 		offset: isNaN(offset) ? 0 : offset,
 		searchText,
-		groupBy
+		groupImdb
 	};
 };

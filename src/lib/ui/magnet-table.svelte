@@ -49,7 +49,7 @@
 	{#if loading}
 		<div class="flex flex-col gap-1" style="height: {tableHeight ?? 642}px">
 			{#each Array(limit + 1) as _}
-				<div class="placeholder flex-1" />
+				<div class="placeholder animate-pulse flex-1" />
 			{/each}
 		</div>
 	{:else}
@@ -70,7 +70,7 @@
 					<tr>
 						<td title={item.title}>
 							<span
-								class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-xs sm:max-w-sm lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl 4xl:max-w-4xl 5xl:max-w-5xl 6xl:max-w-6xl"
+								class="overflow-hidden text-ellipsis inline-block whitespace-nowrap sm:max-w-xs lg:max-w-sm xl:max-w-lg 2xl:max-w-xl 3xl:max-w-2xl 4xl:max-w-3xl 5xl:max-w-4xl 6xl:max-w-5xl"
 							>
 								{item.title}
 							</span>
@@ -84,24 +84,26 @@
 						</td>
 						<td class="table-cell-fit font-mono" title={item.ext_id}>
 							{#if item.ext_id !== null}
-								<a
+								<span
 									class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-[5rem]"
-									href="/ext_id/{item.ext_id}"
 								>
 									{item.ext_id}
-								</a>
+								</span>
 							{/if}
 						</td>
 						<td class="table-cell-fit font-mono" title={item.imdb}>
 							{#if item.imdb !== null}
-								<a class="inline-block whitespace-nowrap" href="/imdb/{item.imdb}">
+								<a
+									class="anchor inline-block whitespace-nowrap"
+									href="/imdb/{item.imdb}"
+								>
 									{item.imdb}
 								</a>
 							{/if}
 						</td>
 						<td class="table-cell-fit">
-							<a href="magnet:?xt=urn:btih:{item.hash}">
-								<IconMagnet />
+							<a href="anchor magnet:?xt=urn:btih:{item.hash}">
+								<IconMagnet size={20} />
 							</a>
 						</td>
 					</tr>

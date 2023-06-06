@@ -2,9 +2,9 @@ import { getCategoryNames } from '$lib/server/categories';
 import database from '$lib/server/database';
 import { items } from '$lib/server/database/schema';
 import { json } from '@sveltejs/kit';
-import { sql, asc, desc, eq, inArray, like } from 'drizzle-orm';
+import { sql, asc, desc, eq, inArray, like, and, isNotNull, SQL } from 'drizzle-orm';
 
-const imdbMatcher = /^tt[0-9]{7,9}$/;
+const imdbMatcher = /^tt[0-9]{6,9}$/;
 
 const getOrderBy = (order: string, ascParam: boolean) => {
 	switch (order) {
@@ -27,30 +27,44 @@ const getOrderBy = (order: string, ascParam: boolean) => {
 const getTotal = async (
 	categories: string[],
 	searchText: string | null,
-	groupBy: 'imdb' | 'extId' | '' | null,
+	groupImdb: boolean,
 	imdb: string | null
 ) => {
 	let query = database.db.select({ count: sql<number>`count(*)` }).from(items);
 
-	if (groupBy === 'extId') {
-		// query = query.groupBy(items.ext_id);
-	} else if (groupBy === 'imdb') {
-		// query = query.groupBy(items.imdb);
-	}
+	const wheres: SQL<unknown>[] = [];
 
 	if (categories.length > 0) {
-		query = query.where(inArray(items.cat, categories));
+		wheres.push(inArray(items.cat, categories));
 	}
-	if (searchText !== null && searchText.length > 0) {
-		if (imdbMatcher.test(searchText)) {
-			query = query.where(eq(items.imdb, searchText));
+
+	const text = searchText?.trim();
+	if (text && text.length > 0) {
+		if (imdbMatcher.test(text)) {
+			wheres.push(eq(items.imdb, text));
 		} else {
-			query = query.where(like(items.title, `%${searchText}%`));
+			const value = text.replace(/\s/, '_');
+			wheres.push(like(items.title, `%${value}%`));
 		}
 	}
-	if (imdb !== null && imdb.length > 0) {
-		query = query.where(eq(items.imdb, imdb));
+
+	if (imdb && imdb.length > 0) {
+		wheres.push(eq(items.imdb, imdb));
 	}
+
+	if (groupImdb) {
+		wheres.push(isNotNull(items.imdb));
+		query = database.db
+			.select({ count: sql<number>`count(DISTINCT ${items.imdb})` })
+			.from(items);
+	}
+
+	if (wheres.length > 1) {
+		query = query.where(and(...wheres));
+	} else if (wheres.length > 0) {
+		query = query.where(wheres[0]);
+	}
+
 	return query.get();
 };
 
@@ -61,7 +75,7 @@ const getItems = async (
 	limit: number,
 	offset: number,
 	searchText: string | null,
-	groupBy: 'imdb' | 'extId' | '' | null,
+	groupImdb: boolean,
 	imdb: string | null
 ) => {
 	let query = database.db
@@ -75,32 +89,47 @@ const getItems = async (
 			ext_id: items.ext_id,
 			imdb: items.imdb
 		})
-		.from(items)
-		.orderBy(getOrderBy(order, asc))
-		.limit(limit)
-		.offset(offset * limit);
+		.from(items);
 
-	if (groupBy === 'extId') {
-		// query = query.groupBy(items.ext_id);
-	} else if (groupBy === 'imdb') {
-		// query = query.groupBy(items.imdb);
-	}
+	const wheres: SQL<unknown>[] = [];
 
 	if (categories.length > 0) {
-		query = query.where(inArray(items.cat, categories));
-	}
-	if (searchText !== null && searchText.length > 0) {
-		if (imdbMatcher.test(searchText)) {
-			query = query.where(eq(items.imdb, searchText));
-		} else {
-			query = query.where(like(items.title, `%${searchText}%`));
-		}
-	}
-	if (imdb !== null && imdb.length > 0) {
-		query = query.where(eq(items.imdb, imdb));
+		wheres.push(inArray(items.cat, categories));
 	}
 
-	return query.all();
+	const text = searchText?.trim();
+	if (text && text.length > 0) {
+		if (imdbMatcher.test(text)) {
+			wheres.push(eq(items.imdb, text));
+		} else {
+			const value = text.replace(/\s/, '_');
+			wheres.push(like(items.title, `%${value}%`));
+		}
+	}
+
+	if (imdb && imdb.length > 0) {
+		wheres.push(eq(items.imdb, imdb));
+	}
+
+	if (groupImdb) {
+		wheres.push(isNotNull(items.imdb));
+	}
+
+	if (wheres.length > 1) {
+		query = query.where(and(...wheres));
+	} else if (wheres.length > 0) {
+		query = query.where(wheres[0]);
+	}
+
+	if (groupImdb) {
+		query = query.groupBy(items.imdb);
+	}
+
+	return query
+		.orderBy(getOrderBy(order, asc))
+		.limit(limit)
+		.offset(offset * limit)
+		.all();
 };
 
 export const GET = async (event) => {
@@ -109,7 +138,7 @@ export const GET = async (event) => {
 	const searchCats = event.url.searchParams.getAll('categories');
 	const searchCategories = categories.filter((c) => searchCats.includes(c));
 
-	const groupBy = event.url.searchParams.get('group-by');
+	const groupImdb = event.url.searchParams.get('group-imdb') === 'true';
 	const imdb = event.url.searchParams.get('imdb');
 	const by = event.url.searchParams.get('by') || 'dt';
 	const asc = event.url.searchParams.get('asc') === 'true';
@@ -121,10 +150,10 @@ export const GET = async (event) => {
 	if (isNaN(limit)) return json({ error: 'Invalid limit' });
 	const offset = parseInt(offsetString);
 	if (isNaN(offset)) return json({ error: 'Invalid offset' });
-	if (groupBy !== null && groupBy !== 'imdb' && groupBy !== 'extId' && groupBy !== '')
-		return json({ error: 'Invalid group-by' });
+	console.log({ groupBy: groupImdb });
 	if (imdb !== null && !imdbMatcher.test(imdb)) return json({ error: 'Invalid imdb' });
 
+	performance.mark('getItems');
 	const items = await getItems(
 		searchCategories,
 		by,
@@ -132,10 +161,17 @@ export const GET = async (event) => {
 		limit,
 		offset,
 		searchText,
-		groupBy,
+		groupImdb,
 		imdb
 	);
-	const total = await getTotal(searchCategories, searchText, groupBy, imdb);
+	performance.mark('getItems-end');
+	const getItemsMeasurement = performance.measure('getItems', 'getItems', 'getItems-end');
+	performance.mark('getTotal');
+	const total = await getTotal(searchCategories, searchText, groupImdb, imdb);
+	performance.mark('getTotal-end');
+	const getTotalMeasurement = performance.measure('getTotal', 'getTotal', 'getTotal-end');
+	console.log('getItems', getItemsMeasurement);
+	console.log('getTotal', getTotalMeasurement);
 
 	return json({ items, total: total.count });
 };
