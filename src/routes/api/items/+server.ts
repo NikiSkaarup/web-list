@@ -150,7 +150,6 @@ export const GET = async (event) => {
 	console.log({ groupBy: groupImdb });
 	if (imdb !== null && !imdbMatcher.test(imdb)) return json({ error: 'Invalid imdb' });
 
-	performance.mark('getItems');
 	const items = await getItems(
 		searchCategories,
 		by,
@@ -161,14 +160,7 @@ export const GET = async (event) => {
 		groupImdb,
 		imdb
 	);
-	performance.mark('getItems-end');
-	const getItemsMeasurement = performance.measure('getItems', 'getItems', 'getItems-end');
-	performance.mark('getTotal');
 	const total = await getTotal(searchCategories, searchText, groupImdb, imdb);
-	performance.mark('getTotal-end');
-	const getTotalMeasurement = performance.measure('getTotal', 'getTotal', 'getTotal-end');
-	console.log('getItems', getItemsMeasurement);
-	console.log('getTotal', getTotalMeasurement);
 
 	return json({ items, total: total.count });
 };
