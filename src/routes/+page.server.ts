@@ -1,5 +1,5 @@
 import { getCategoryNames } from '$lib/server/categories';
-import type { selectItemSchema } from '$lib/server/db/schema';
+import type { selectItemSchema } from '$lib/server/database/schema';
 
 export const load = async (event) => {
 	const categories = await getCategoryNames();
@@ -9,7 +9,7 @@ export const load = async (event) => {
 	const asc = event.url.searchParams.get('asc') === 'true';
 	const limit = Number(event.url.searchParams.get('limit'));
 	const offset = Number(event.url.searchParams.get('offset'));
-	const title = event.url.searchParams.get('title');
+	const searchText = event.url.searchParams.get('search-text');
 	const groupBy = event.url.searchParams.get('group-by');
 
 	const response = await event.fetch('/api/items' + event.url.search);
@@ -36,7 +36,7 @@ export const load = async (event) => {
 		asc,
 		limit: isNaN(limit) ? 10 : limit > 0 ? limit : 10,
 		offset: isNaN(offset) ? 0 : offset,
-		title,
+		searchText,
 		groupBy
 	};
 };

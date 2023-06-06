@@ -69,20 +69,11 @@
 				{#each items as item (item.id)}
 					<tr>
 						<td title={item.title}>
-							{#if item.imdb !== null}
-								<a
-									class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-xs sm:max-w-sm lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl 4xl:max-w-4xl 5xl:max-w-5xl 6xl:max-w-6xl"
-									href="/imdb/{item.imdb}"
-								>
-									{item.title}
-								</a>
-							{:else}
-								<span
-									class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-xs sm:max-w-sm lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl 4xl:max-w-4xl 5xl:max-w-5xl 6xl:max-w-6xl"
-								>
-									{item.title}
-								</span>
-							{/if}
+							<span
+								class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-xs sm:max-w-sm lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl 4xl:max-w-4xl 5xl:max-w-5xl 6xl:max-w-6xl"
+							>
+								{item.title}
+							</span>
 						</td>
 						<td class="table-cell-fit font-mono">
 							<span class="whitespace-nowrap">{item.dt}</span>
@@ -92,15 +83,22 @@
 							<span class="whitespace-nowrap">{getSize(item.size)} GB</span>
 						</td>
 						<td class="table-cell-fit font-mono" title={item.ext_id}>
-							<span
-								class="inline-block overflow-hidden whitespace-nowrap text-ellipsis max-w-[5rem]"
-							>
-								{item.ext_id ?? 'n/a'}
-							</span>
+							{#if item.ext_id !== null}
+								<a
+									class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-[5rem]"
+									href="/ext_id/{item.ext_id}"
+								>
+									{item.ext_id}
+								</a>
+							{/if}
 						</td>
-						<td class="table-cell-fit font-mono" title={item.imdb}
-							>{item.imdb ?? 'n/a'}</td
-						>
+						<td class="table-cell-fit font-mono" title={item.imdb}>
+							{#if item.imdb !== null}
+								<a class="inline-block whitespace-nowrap" href="/imdb/{item.imdb}">
+									{item.imdb}
+								</a>
+							{/if}
+						</td>
 						<td class="table-cell-fit">
 							<a href="magnet:?xt=urn:btih:{item.hash}">
 								<IconMagnet />

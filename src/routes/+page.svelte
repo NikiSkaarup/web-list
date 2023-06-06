@@ -22,6 +22,7 @@
 		amounts: [10, 25, 50, 100]
 	};
 
+	$: searchText = data.searchText ?? '';
 	$: loading = false;
 
 	const getValues = () => {
@@ -38,21 +39,19 @@
 		const groupByArr = radio
 			.filter((input) => input.name === 'group-by')
 			.filter((input) => input.checked);
-		const title = div.querySelector<HTMLInputElement>('.filter-title');
 
 		return {
 			categories,
-			groupBy: groupByArr.length > 0 ? groupByArr[0].value : '',
-			title: title && title.value.length > 0 ? title.value : ''
+			groupBy: groupByArr.length > 0 ? groupByArr[0].value : ''
 		};
 	};
 
 	const onChange = async () => {
 		loading = true;
-		const { categories, groupBy, title } = getValues();
+		const { categories, groupBy } = getValues();
 		let params = `?by=${sort.by}&asc=${sort.asc}&limit=${settings.limit}&offset=${settings.offset}`;
 
-		if (title.length > 0) params += `&title=${title}`;
+		if (searchText.length > 0) params += `&search-text=${searchText}`;
 		if (categories.length > 0) params += `&${categories}`;
 		if (groupBy.length > 0) params += `&group-by=${groupBy}`;
 
@@ -69,8 +68,7 @@
 		const groupBy = Array.from(div.querySelectorAll<HTMLInputElement>('.filter-radio')).filter(
 			(input) => input.name === 'group-by'
 		);
-		const title = div.querySelector<HTMLInputElement>('.filter-title');
-		if (title) title.value = '';
+		searchText = '';
 		categories.forEach((input) => {
 			input.checked = false;
 		});
@@ -102,10 +100,11 @@
 		</div>
 
 		<input
-			class="filter-title input"
+			class="input"
 			type="text"
 			name="title"
 			placeholder="Search"
+			bind:value={data.searchText}
 			on:keypress={(e) => {
 				if (e.key === 'Enter') {
 					onChange();
@@ -158,5 +157,11 @@
 
 	<MagnetTable limit={settings.limit} {loading} {items} {sort} on:sort={onChange} />
 
-	<Paginator bind:settings on:page={onChange} on:amount={onChange} />
+	<Paginator
+		bind:settings
+		on:page={onChange}
+		on:amount={onChange}
+		controlVariant="variant-ghost-surface"
+		active="variant-ghost-primary"
+	/>
 </div>

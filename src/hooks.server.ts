@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
-import db from '$lib/server/db';
-import { items } from '$lib/server/db/schema';
+import database from '$lib/server/database';
+import { items } from '$lib/server/database/schema';
 import { sql } from 'drizzle-orm';
 
 const stringReplace = (str: string, toFind: string, replaceValue: string) => {
@@ -13,8 +13,9 @@ const stringReplace = (str: string, toFind: string, replaceValue: string) => {
 };
 
 export const handle = async ({ event, resolve }) => {
-	if (!global.drizzleDb) {
-		db.select({ count: sql`count(*)` })
+	if (!global.betterSQLiteDb) {
+		database.db
+			.select({ count: sql`count(*)` })
 			.from(items)
 			.get();
 	}

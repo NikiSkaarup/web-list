@@ -1,5 +1,5 @@
 import { getCategoryNames } from '$lib/server/categories';
-import type { selectItemSchema } from '$lib/server/db/schema';
+import type { selectItemSchema } from '$lib/server/database/schema';
 
 export const load = async (event) => {
 	const { imdb } = event.params;

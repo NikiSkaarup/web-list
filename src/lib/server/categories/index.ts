@@ -1,8 +1,8 @@
 import { sql } from 'drizzle-orm';
-import { items } from '../db/schema';
-import db from '$lib/server/db';
+import { items } from '../database/schema';
+import database from '$lib/server/database';
 
-const categoriesSelect = db
+const categoriesSelect = database.db
 	.select({ cat: sql<string>`distinct ${items.cat}` })
 	.from(items)
 	.prepare();

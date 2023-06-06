@@ -1,8 +1,10 @@
 import { getCategoryNames } from '$lib/server/categories';
-import db from '$lib/server/db';
-import { items } from '$lib/server/db/schema';
+import database from '$lib/server/database';
+import { items } from '$lib/server/database/schema';
 import { json } from '@sveltejs/kit';
-import { sql, asc, desc, eq, inArray, like, isNotNull } from 'drizzle-orm';
+import { sql, asc, desc, eq, inArray, like } from 'drizzle-orm';
+
+const imdbMatcher = /^tt[0-9]{7,9}$/;
 
 const getOrderBy = (order: string, ascParam: boolean) => {
 	switch (order) {
@@ -22,13 +24,13 @@ const getOrderBy = (order: string, ascParam: boolean) => {
 	}
 };
 
-const getTotal = (
+const getTotal = async (
 	categories: string[],
-	title: string | null,
+	searchText: string | null,
 	groupBy: 'imdb' | 'extId' | '' | null,
 	imdb: string | null
 ) => {
-	let query = db.select({ count: sql<number>`count(*)` }).from(items);
+	let query = database.db.select({ count: sql<number>`count(*)` }).from(items);
 
 	if (groupBy === 'extId') {
 		// query = query.groupBy(items.ext_id);
@@ -36,24 +38,33 @@ const getTotal = (
 		// query = query.groupBy(items.imdb);
 	}
 
-	if (categories.length > 0) query = query.where(inArray(items.cat, categories));
-	if (title !== null && title.length > 0) query = query.where(like(items.title, `%${title}%`));
-	if (imdb !== null && imdb.length > 0) query = query.where(eq(items.imdb, imdb));
-
+	if (categories.length > 0) {
+		query = query.where(inArray(items.cat, categories));
+	}
+	if (searchText !== null && searchText.length > 0) {
+		if (imdbMatcher.test(searchText)) {
+			query = query.where(eq(items.imdb, searchText));
+		} else {
+			query = query.where(like(items.title, `%${searchText}%`));
+		}
+	}
+	if (imdb !== null && imdb.length > 0) {
+		query = query.where(eq(items.imdb, imdb));
+	}
 	return query.get();
 };
 
-const getItems = (
+const getItems = async (
 	categories: string[],
 	order: string,
 	asc: boolean,
 	limit: number,
 	offset: number,
-	title: string | null,
+	searchText: string | null,
 	groupBy: 'imdb' | 'extId' | '' | null,
 	imdb: string | null
 ) => {
-	let query = db
+	let query = database.db
 		.select({
 			id: items.id,
 			hash: items.hash,
@@ -75,14 +86,22 @@ const getItems = (
 		// query = query.groupBy(items.imdb);
 	}
 
-	if (categories.length > 0) query = query.where(inArray(items.cat, categories));
-	if (title !== null && title.length > 0) query = query.where(like(items.title, `%${title}%`));
-	if (imdb !== null && imdb.length > 0) query = query.where(eq(items.imdb, imdb));
+	if (categories.length > 0) {
+		query = query.where(inArray(items.cat, categories));
+	}
+	if (searchText !== null && searchText.length > 0) {
+		if (imdbMatcher.test(searchText)) {
+			query = query.where(eq(items.imdb, searchText));
+		} else {
+			query = query.where(like(items.title, `%${searchText}%`));
+		}
+	}
+	if (imdb !== null && imdb.length > 0) {
+		query = query.where(eq(items.imdb, imdb));
+	}
 
 	return query.all();
 };
-
-const imdbMatcher = /^tt[0-9]{7,9}$/;
 
 export const GET = async (event) => {
 	const categories = await getCategoryNames();
@@ -96,7 +115,7 @@ export const GET = async (event) => {
 	const asc = event.url.searchParams.get('asc') === 'true';
 	const limitString = event.url.searchParams.get('limit') || '10';
 	const offsetString = event.url.searchParams.get('offset') || '0';
-	const title = event.url.searchParams.get('title');
+	const searchText = event.url.searchParams.get('search-text');
 
 	const limit = parseInt(limitString);
 	if (isNaN(limit)) return json({ error: 'Invalid limit' });
@@ -106,8 +125,17 @@ export const GET = async (event) => {
 		return json({ error: 'Invalid group-by' });
 	if (imdb !== null && !imdbMatcher.test(imdb)) return json({ error: 'Invalid imdb' });
 
-	const items = await getItems(searchCategories, by, asc, limit, offset, title, groupBy, imdb);
-	const total = await getTotal(searchCategories, title, groupBy, imdb);
+	const items = await getItems(
+		searchCategories,
+		by,
+		asc,
+		limit,
+		offset,
+		searchText,
+		groupBy,
+		imdb
+	);
+	const total = await getTotal(searchCategories, searchText, groupBy, imdb);
 
 	return json({ items, total: total.count });
 };
