@@ -102,7 +102,7 @@
 							{/if}
 						</td>
 						<td class="table-cell-fit">
-							<a href="anchor magnet:?xt=urn:btih:{item.hash}">
+							<a class="anchor" href="magnet:?xt=urn:btih:{item.hash}">
 								<IconMagnet size={20} />
 							</a>
 						</td>
