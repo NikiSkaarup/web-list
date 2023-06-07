@@ -1,18 +1,11 @@
 <script>
-	import { enhance } from '$app/forms';
-	import { CodeBlock, SlideToggle } from '@skeletonlabs/skeleton';
-
-	// Content-Disposition: form-data; name="urls"
-	// Content-Disposition: form-data; name="savepath"
-	// Content-Disposition: form-data; name="cookie"
-	// Content-Disposition: form-data; name="category"
-	// Content-Disposition: form-data; name="skip_checking"
-	// Content-Disposition: form-data; name="paused"
-	// Content-Disposition: form-data; name="root_folder"
+	// import { enhance } from '$app/forms';
+	// import { CodeBlock, SlideToggle } from '@skeletonlabs/skeleton';
 	export let data;
-	export let form;
+	// export let form;
 </script>
 
+<!--
 <div class="container mx-auto space-y-8 p-8">
 	<form action="" method="post" class="flex flex-wrap gap-4" use:enhance>
 		<input
@@ -43,13 +36,13 @@
 			<CodeBlock language={'json'} code={JSON.stringify(form, null, 2)} lineNumbers={true} />
 		</div>
 	{/if}
-</div>
+</div> -->
 
-<div class="container mx-auto space-y-8 p-8">
+<!-- <div class="container mx-auto space-y-8 p-8">
 	{#each Object.entries(data) as [key, value]}
 		<div class="space-y-4">
 			<h4 class="h4">{key}</h4>
 			<CodeBlock language={'json'} code={value} lineNumbers={true} />
 		</div>
 	{/each}
-</div>
+</div> -->

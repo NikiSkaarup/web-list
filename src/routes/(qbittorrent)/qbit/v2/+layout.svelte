@@ -9,9 +9,9 @@
 	// import '@skeletonlabs/skeleton/themes/theme-hamlindigo.css';
 	// import '@skeletonlabs/skeleton/themes/theme-gold-nouveau.css';
 	// import '@skeletonlabs/skeleton/themes/theme-crimson.css';
-	import '../theme.postcss';
+	import '$lib/../theme.postcss';
 	import '@skeletonlabs/skeleton/styles/all.css';
-	import '../app.postcss';
+	import '$lib/../app.postcss';
 	import {
 		AppBar,
 		AppShell,
@@ -23,6 +23,8 @@
 	import { storeHighlightJs, storePopup } from '@skeletonlabs/skeleton';
 	import hljs from 'highlight.js';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
+	import Trail from '$lib/ui/trail.svelte';
+	import Lead from '$lib/ui/lead.svelte';
 
 	storeHighlightJs.set(hljs);
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
@@ -39,22 +41,11 @@
 	<svelte:fragment slot="header">
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<a href="/">
-					<strong class="text-xl uppercase">web-list</strong>
-				</a>
+				<Lead />
 			</svelte:fragment>
 			<svelte:fragment slot="default"><span /></svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a class="btn btn-sm variant-ghost-surface" href="/qbit/v2"> qBit </a>
-				<a class="btn btn-sm variant-ghost-surface" href="/"> Search </a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/nikiskaarup/web-list"
-					target="_blank"
-					rel="noreferrer"
-				>
-					GitHub
-				</a>
+				<Trail />
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
