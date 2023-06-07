@@ -41,7 +41,7 @@ import topPriority from './top-priority';
 import torrentDelete from './delete';
 import trackers from './trackers';
 import uploadLimit from './upload-limit';
-import webSeeds from './webSeeds';
+import webSeeds from './web-seeds';
 
 export default {
 	add,
