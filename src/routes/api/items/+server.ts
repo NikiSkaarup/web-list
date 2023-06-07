@@ -147,7 +147,6 @@ export const GET = async (event) => {
 	if (isNaN(limit)) return json({ error: 'Invalid limit' });
 	const offset = parseInt(offsetString);
 	if (isNaN(offset)) return json({ error: 'Invalid offset' });
-	console.log({ groupBy: groupImdb });
 	if (imdb !== null && !imdbMatcher.test(imdb)) return json({ error: 'Invalid imdb' });
 
 	const items = await getItems(

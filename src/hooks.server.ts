@@ -3,15 +3,6 @@ import database from '$lib/server/database';
 import { items } from '$lib/server/database/schema';
 import { sql } from 'drizzle-orm';
 
-const stringReplace = (str: string, toFind: string, replaceValue: string) => {
-	const index = str.indexOf(toFind);
-	if (index === -1) {
-		return str;
-	}
-
-	return str.substring(0, index) + replaceValue + str.substring(index + toFind.length);
-};
-
 export const handle = async ({ event, resolve }) => {
 	if (!global.libSQLClient) {
 		database.db
@@ -21,14 +12,7 @@ export const handle = async ({ event, resolve }) => {
 	}
 
 	event.locals.requestStart = performance.now();
-	return resolve(event, {
-		transformPageChunk: ({ html }) =>
-			stringReplace(
-				html,
-				'%request_duration%',
-				(performance.now() - event.locals.requestStart).toFixed(3)
-			)
-	});
+	return resolve(event);
 };
 
 export const handleFetch = async ({ request, fetch }) => {

@@ -70,7 +70,7 @@
 					<tr>
 						<td title={item.title}>
 							<span
-								class="overflow-hidden text-ellipsis inline-block whitespace-nowrap sm:max-w-xs lg:max-w-sm xl:max-w-lg 2xl:max-w-xl 3xl:max-w-2xl 4xl:max-w-3xl 5xl:max-w-4xl 6xl:max-w-5xl"
+								class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-[19rem] xl:max-w-lg 2xl:max-w-3xl 3xl:max-w-3xl 4xl:max-w-4xl 5xl:max-w-5xl 6xl:max-w-6xl"
 							>
 								{item.title}
 							</span>
@@ -85,7 +85,7 @@
 						<td class="table-cell-fit font-mono" title={item.ext_id}>
 							{#if item.ext_id !== null}
 								<span
-									class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-[5rem]"
+									class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-[4rem]"
 								>
 									{item.ext_id}
 								</span>

@@ -20,7 +20,6 @@
 		Modal,
 		Drawer
 	} from '@skeletonlabs/skeleton';
-	import Perf from '$lib/ui/perf.svelte';
 	import { storeHighlightJs, storePopup } from '@skeletonlabs/skeleton';
 	import hljs from 'highlight.js';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -32,8 +31,6 @@
 <svelte:head>
 	{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
 </svelte:head>
-
-<Perf />
 
 <Drawer />
 <Modal />
