@@ -45,6 +45,7 @@
 			</svelte:fragment>
 			<svelte:fragment slot="default"><span /></svelte:fragment>
 			<svelte:fragment slot="trail">
+				<a class="btn btn-sm variant-ghost-surface" href="/qbit/v2"> qBit </a>
 				<a class="btn btn-sm variant-ghost-surface" href="/"> Search </a>
 				<a
 					class="btn btn-sm variant-ghost-surface"
