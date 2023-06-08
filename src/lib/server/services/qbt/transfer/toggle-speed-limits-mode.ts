@@ -1,4 +1,15 @@
-export default async (enabled: boolean): Promise<void> => {
-	// return response based on given enabled value if successful
-	throw new Error('Not implemented');
+import shared from '../shared';
+
+export default async (enabled: boolean) => {
+	const input = `${shared.baseUrl}/transfer/toggleSpeedLimitsMode`;
+
+	const response = await fetch(input, {
+		method: 'GET'
+	});
+
+	if (!response.ok) {
+		throw new Error(response.statusText);
+	}
+
+	return !enabled;
 };

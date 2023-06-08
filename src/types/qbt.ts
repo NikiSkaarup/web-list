@@ -616,3 +616,8 @@ type QbtSearchPlugin = {
 };
 
 type QbtSearchPlugins = QbtSearchPlugin[];
+
+/**
+ * The response is 1 if alternative speed limits are enabled, 0 otherwise.
+ */
+type QbtTransferSpeedLimitsMode = 0 | 1;
