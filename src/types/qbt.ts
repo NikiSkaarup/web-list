@@ -397,15 +397,76 @@ type QbtTransferInfo = {
 	refresh_interval?: number; // Transfer list refresh interval (milliseconds)
 };
 
+type QbtTorrentsInfoFilter =
+	| 'all'
+	| 'downloading'
+	| 'seeding'
+	| 'completed'
+	| 'paused'
+	| 'active'
+	| 'inactive'
+	| 'resumed'
+	| 'stalled'
+	| 'stalled_uploading'
+	| 'stalled_downloading'
+	| 'errored';
+
+type QbtTorrentsInfoSort =
+	| 'added_on'
+	| 'amount_left'
+	| 'auto_tmm'
+	| 'availability'
+	| 'category'
+	| 'completed'
+	| 'completion_on'
+	| 'content_path'
+	| 'dl_limit'
+	| 'dlspeed'
+	| 'downloaded'
+	| 'downloaded_session'
+	| 'eta'
+	| 'f_l_piece_prio'
+	| 'force_start'
+	| 'hash'
+	| 'last_activity'
+	| 'magnet_uri'
+	| 'max_ratio'
+	| 'max_seeding_time'
+	| 'name'
+	| 'num_complete'
+	| 'num_incomplete'
+	| 'num_leechs'
+	| 'num_seeds'
+	| 'priority'
+	| 'progress'
+	| 'ratio'
+	| 'ratio_limit'
+	| 'save_path'
+	| 'seeding_time'
+	| 'seeding_time_limit'
+	| 'seen_complete'
+	| 'seq_dl'
+	| 'size'
+	| 'state'
+	| 'super_seeding'
+	| 'tags'
+	| 'time_active'
+	| 'total_size'
+	| 'tracker'
+	| 'up_limit'
+	| 'uploaded'
+	| 'uploaded_session'
+	| 'upspeed';
+
 type QbtTorrentsInfoParameters = {
-	filter?: string; // Filter torrent list by state. Allowed state filters: all, downloading, seeding, completed, paused, active, inactive, resumed, stalled, stalled_uploading, stalled_downloading, errored
+	filter?: QbtTorrentsInfoFilter; // Filter torrent list by state. Allowed state filters: all, downloading, seeding, completed, paused, active, inactive, resumed, stalled, stalled_uploading, stalled_downloading, errored
 	category?: string; // Get torrents with the given category (empty string means "without category"; no "category" parameter means "any category" <- broken until #11748 is resolved). Remember to URL-encode the category name. For example, My category becomes My%20category
-	tag?: string; // since 2.8.3 Get torrents with the given tag (empty string means "without tag"; no "tag" parameter means "any tag". Remember to URL-encode the category name. For example, My tag becomes My%20tag
-	sort?: string; // Sort torrents by given key. They can be sorted using any field of the response's JSON array (which are documented below) as the sort key.
+	tag?: QbtTorrentsTag; // since 2.8.3 Get torrents with the given tag (empty string means "without tag"; no "tag" parameter means "any tag". Remember to URL-encode the category name. For example, My tag becomes My%20tag
+	sort?: QbtTorrentsInfoSort; // Sort torrents by given key. They can be sorted using any field of the response's JSON array (which are documented below) as the sort key.
 	reverse?: boolean; // Enable reverse sorting. Defaults to false
 	limit?: number; // Limit the number of torrents returned
 	offset?: number; // Set offset (if less than 0, offset from end)
-	hashes?: string; // Filter by hashes. Can contain multiple hashes separated by |
+	hashes?: Array<QbtHash>; // Filter by hashes. Can contain multiple hashes separated by |
 };
 
 type QbtTorrentsProperties = {
