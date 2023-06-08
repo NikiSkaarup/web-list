@@ -1,6 +1,6 @@
 export default async (
 	pattern: string,
-	plugins: string[] | string,
+	plugins: Array<string> | string,
 	category: string
 ): Promise<void> => {
 	if (typeof plugins === 'string') plugins = [plugins];

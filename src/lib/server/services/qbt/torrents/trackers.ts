@@ -14,6 +14,6 @@ export default async (hash: string) => {
 		throw new Error(response.statusText);
 	}
 
-	const data: QbtTorrentsTrackers[] = await response.json();
+	const data: Array<QbtTorrentsTrackers> = await response.json();
 	return data;
 };

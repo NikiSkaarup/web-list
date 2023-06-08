@@ -1,6 +1,6 @@
 import shared from '../shared';
 
-export default async (peers: string[]): Promise<void> => {
+export default async (peers: Array<string>): Promise<void> => {
 	const input = `${shared.baseUrl}/transfer/setUploadLimit`;
 	// peer === host:port / ip:port
 	const peersToBan = peers.join('|');

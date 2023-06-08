@@ -13,7 +13,7 @@ export const load = async (event) => {
 	const groupImdb = event.url.searchParams.get('group-imdb') === 'true';
 
 	const response = await event.fetch('/api/items' + event.url.search);
-	const result: { items: (typeof selectItemSchema._type)[]; total: number } =
+	const result: { items: Array<typeof selectItemSchema._type>; total: number } =
 		await response.json();
 
 	if (!['dt', 'title', 'size', 'cat', 'imdb', 'ext_id'].includes(by)) {

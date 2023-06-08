@@ -1,6 +1,6 @@
 import shared from '../shared';
 
-export default async (filters: QbtLogMainParameters): Promise<QbtLogItem[]> => {
+export default async (filters: QbtLogMainParameters): Promise<Array<QbtLogItem>> => {
 	const input = `${shared.baseUrl}/log/main`;
 	let params = '';
 
@@ -36,6 +36,6 @@ export default async (filters: QbtLogMainParameters): Promise<QbtLogItem[]> => {
 		throw new Error(response.statusText);
 	}
 
-	const data: QbtLogItem[] = await response.json();
+	const data: Array<QbtLogItem> = await response.json();
 	return data;
 };

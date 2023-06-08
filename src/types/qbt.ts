@@ -369,11 +369,11 @@ type QbtSyncMainData = {
 	rid: number; // Response ID
 	full_update: boolean; // Whether the response contains all the data or partial data
 	torrents: { [key: string]: QbtTorrent }; // Property: torrent hash, value: same as torrent list
-	torrents_removed: string[]; // List of hashes of torrents removed since last request
+	torrents_removed: Array<string>; // List of hashes of torrents removed since last request
 	categories: object; // Info for categories added since last request
-	categories_removed: string[]; // List of categories removed since last request
-	tags: string[]; // List of tags added since last request
-	tags_removed: string[]; // List of tags removed since last request
+	categories_removed: Array<string>; // List of categories removed since last request
+	tags: Array<string>; // List of tags added since last request
+	tags_removed: Array<string>; // List of tags removed since last request
 	server_state: object; // Global transfer info
 };
 
@@ -503,11 +503,11 @@ type QbtTorrentsAddPause = 'true' | 'false';
 
 type QbtTorrentsAddParams = {
 	urls: string; // magnet / torrent file URLs separated with newlines
-	torrents?: unknown; // Raw data of torrent file. torrents can be presented multiple times.
+	torrents?: Blob; // Raw data of torrent file. torrents can be presented multiple times.
 	savepath?: string; // Download folder
 	cookie?: string; // Cookie sent to download the .torrent file
 	category?: string; // Category for the torrent
-	tags?: string; // Tags for the torrent, split by ','
+	tags?: Array<string>; // Tags for the torrent, split by ','
 	skip_checking?: string; // Skip hash checking. Possible values are true, false (default)
 	paused?: QbtTorrentsAddPause; // Add torrents in the paused state. Possible values are true, false (default)
 	root_folder?: string; // Create the root folder. Possible values are true, false, unset (default)
@@ -532,7 +532,7 @@ type QbtTorrentsCategories = {
 
 type QbtTorrentsTag = string;
 
-type QbtTorrentsTags = QbtTorrentsTag[];
+type QbtTorrentsTags = Array<QbtTorrentsTag>;
 
 type QbtRSSItem =
 	| string
@@ -551,8 +551,8 @@ type QbtRSSRuleDef = {
 	useRegex: boolean; // Enable regex mode in "mustContain" and "mustNotContain"
 	episodeFilter: string; // Episode filter definition
 	smartFilter: boolean; // Enable smart episode filter
-	previouslyMatchedEpisodes: string[]; // The list of episode IDs already matched by smart filter
-	affectedFeeds: string[]; // The feed URLs the rule applied to
+	previouslyMatchedEpisodes: Array<string>; // The list of episode IDs already matched by smart filter
+	affectedFeeds: Array<string>; // The feed URLs the rule applied to
 	ignoreDays: number; // Ignore subsequent rule matches
 	lastMatch: string; // The rule last match time
 	addPaused: boolean; // Add matched torrent in paused mode
@@ -570,7 +570,7 @@ type QbtRSSRules = {
 };
 
 type QbtRSSMatchingArticles = {
-	[key: string]: string[];
+	[key: string]: Array<string>;
 };
 
 type QbtSearchStartResponse = {
@@ -596,7 +596,7 @@ type QbtSearchResultItem = {
 };
 
 type QbtSearchResult = {
-	results: QbtSearchResultItem[];
+	results: Array<QbtSearchResultItem>;
 	status: QbtSearchStatus;
 	total: number;
 };
@@ -610,12 +610,12 @@ type QbtSearchPlugin = {
 	enabled: boolean; // Whether the plugin is enabled
 	fullName: string; // Full name of the plugin
 	name: string; // Short name of the plugin
-	supportedCategories: QbtSearchPluginCategory[]; // List of category objects
+	supportedCategories: Array<QbtSearchPluginCategory>; // List of category objects
 	url: string; // URL of the torrent site
 	version: string; // Installed version of the plugin
 };
 
-type QbtSearchPlugins = QbtSearchPlugin[];
+type QbtSearchPlugins = Array<QbtSearchPlugin>;
 
 /**
  * The response is 1 if alternative speed limits are enabled, 0 otherwise.

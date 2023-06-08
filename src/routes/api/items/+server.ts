@@ -25,14 +25,14 @@ const getOrderBy = (order: string, ascParam: boolean) => {
 };
 
 const getTotal = async (
-	categories: string[],
+	categories: Array<string>,
 	searchText: string | null,
 	groupImdb: boolean,
 	imdb: string | null
 ) => {
 	let query = database.db.select({ count: sql<number>`count(*)` }).from(items);
 
-	const wheres: SQL<unknown>[] = [];
+	const wheres: Array<SQL<unknown>> = [];
 
 	if (categories.length > 0) {
 		wheres.push(inArray(items.cat, categories));
@@ -69,7 +69,7 @@ const getTotal = async (
 };
 
 const getItems = async (
-	categories: string[],
+	categories: Array<string>,
 	order: string,
 	asc: boolean,
 	limit: number,
@@ -91,7 +91,7 @@ const getItems = async (
 		})
 		.from(items);
 
-	const wheres: SQL<unknown>[] = [];
+	const wheres: Array<SQL<unknown>> = [];
 
 	if (categories.length > 0) {
 		wheres.push(inArray(items.cat, categories));

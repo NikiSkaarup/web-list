@@ -14,6 +14,6 @@ export default async (hash: string) => {
 		throw new Error(response.statusText);
 	}
 
-	const data: QbtTorrentsWebSeeds[] = await response.json();
+	const data: Array<QbtTorrentsWebSeeds> = await response.json();
 	return data;
 };

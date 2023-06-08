@@ -1,6 +1,6 @@
 export default {
 	single: async (
-		hashes: string[],
+		hashes: Array<string>,
 		ratioLimit: number,
 		seedingTimeLimit: number
 	): Promise<void> => {

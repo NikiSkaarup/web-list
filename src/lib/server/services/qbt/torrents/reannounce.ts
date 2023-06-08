@@ -1,10 +1,37 @@
+import shared from '../shared';
+
 export default {
-	single: async (hashes: string[]): Promise<void> => {
+	single: async (hashes: Array<string>) => {
+		const input = `${shared.baseUrl}/torrents/reannounce`;
 		const hashesToReannounce = hashes.join('|');
-		throw new Error('Not implemented');
+		const response = await fetch(`${input}?hashes=${hashesToReannounce}`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	},
-	all: async (): Promise<void> => {
-		// parameter "hashes" set to all
-		throw new Error('Not implemented');
+	all: async () => {
+		const input = `${shared.baseUrl}/torrents/reannounce`;
+		const response = await fetch(`${input}?hashes=all`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	}
 };

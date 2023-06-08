@@ -1,5 +1,5 @@
 export default {
-	single: async (hashes: string[]): Promise<void> => {
+	single: async (hashes: Array<string>): Promise<void> => {
 		const hashesToIncreasePriority = hashes.join('|');
 		throw new Error('Not implemented');
 	},

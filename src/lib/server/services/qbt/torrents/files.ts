@@ -1,6 +1,6 @@
 import shared from '../shared';
 
-export default async (hash: string, indexes?: string[]) => {
+export default async (hash: string, indexes?: Array<string>) => {
 	const input = `${shared.baseUrl}/torrents/files`;
 
 	let params = `hash=${hash}`;
@@ -22,6 +22,6 @@ export default async (hash: string, indexes?: string[]) => {
 		throw new Error(response.statusText);
 	}
 
-	const data: QbtTorrentsFiles[] = await response.json();
+	const data: Array<QbtTorrentsFiles> = await response.json();
 	return data;
 };

@@ -1,5 +1,5 @@
 export default {
-	single: async (hashes: string[], location: string): Promise<void> => {
+	single: async (hashes: Array<string>, location: string): Promise<void> => {
 		const hashesToSetLocation = hashes.join('|');
 		throw new Error('Not implemented');
 	},

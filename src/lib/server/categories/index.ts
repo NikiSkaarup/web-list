@@ -7,7 +7,7 @@ const categoriesSelect = database.db
 	.from(items)
 	.prepare();
 
-let categories: string[] = [];
+let categories: Array<string> = [];
 export const getCategoryNames = async () => {
 	if (categories.length === 0) {
 		const result = await categoriesSelect.all();

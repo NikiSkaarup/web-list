@@ -3,7 +3,7 @@
 	import IconMagnet from '@tabler/icons-svelte/dist/svelte/icons/IconMagnet.svelte';
 	import MagnetTh from './magnet-th.svelte';
 
-	export let items: {
+	export let items: Array<{
 		id: number;
 		hash: string;
 		title: string;
@@ -12,7 +12,7 @@
 		size: number | null;
 		ext_id: string | null;
 		imdb: string | null;
-	}[];
+	}>;
 
 	export let sort: {
 		by: 'dt' | 'title' | 'size' | 'cat' | 'imdb' | 'ext_id';

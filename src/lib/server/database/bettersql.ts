@@ -4,7 +4,7 @@
 // import { dev } from '$app/environment';
 
 // const db_verbose = env.DATABASE_VERBOSE === 'true';
-// const verbose = (...data: any[]) => {
+// const verbose = (...data: Array<any>) => {
 // 	if (!dev || !db_verbose) return;
 // 	console.log(...data);
 // };

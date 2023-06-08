@@ -1,5 +1,5 @@
 export default {
-	single: async (hashes: string[], category: string): Promise<void> => {
+	single: async (hashes: Array<string>, category: string): Promise<void> => {
 		const hashesToSetCategory = hashes.join('|');
 		throw new Error('Not implemented');
 	},

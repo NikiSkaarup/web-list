@@ -11,6 +11,6 @@ export default async (lastKnownId: number = -1) => {
 		throw new Error(response.statusText);
 	}
 
-	const data: QbtPeerLogItem[] = await response.json();
+	const data: Array<QbtPeerLogItem> = await response.json();
 	return data;
 };

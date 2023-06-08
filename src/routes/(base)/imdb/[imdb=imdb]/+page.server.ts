@@ -21,7 +21,7 @@ export const load = async (event) => {
 		imdb;
 
 	const response = await event.fetch(input);
-	const result: { items: (typeof selectItemSchema._type)[]; total: number } =
+	const result: { items: Array<typeof selectItemSchema._type>; total: number } =
 		await response.json();
 
 	if (!['dt', 'title', 'size', 'cat', 'imdb', 'ext_id'].includes(by)) {

@@ -14,6 +14,6 @@ export default async (hash: string) => {
 		throw new Error(response.statusText);
 	}
 
-	const data: QbtTorrentsPieceStates[] = await response.json();
+	const data: Array<QbtTorrentsPieceStates> = await response.json();
 	return data;
 };

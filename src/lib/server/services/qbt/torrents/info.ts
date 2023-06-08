@@ -14,6 +14,6 @@ export default async (filters: QbtTorrentsInfoParameters) => {
 		throw new Error(response.statusText);
 	}
 
-	const data: QbtTorrent[] = await response.json();
+	const data: Array<QbtTorrent> = await response.json();
 	return data;
 };

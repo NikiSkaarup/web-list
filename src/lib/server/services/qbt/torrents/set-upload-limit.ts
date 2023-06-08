@@ -1,5 +1,5 @@
 export default {
-	single: async (hashes: string[], limit: number): Promise<void> => {
+	single: async (hashes: Array<string>, limit: number): Promise<void> => {
 		const hashesToSetUploadLimit = hashes.join('|');
 		throw new Error('Not implemented');
 	},

@@ -1,4 +1,4 @@
-export default async (tags: string[]): Promise<void> => {
+export default async (tags: Array<string>): Promise<void> => {
 	const tagsToDelete = tags.join(',');
 	throw new Error('Not implemented');
 };
