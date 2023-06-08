@@ -583,7 +583,7 @@ type QbtSearchStatus = 'Running' | 'Stopped';
 
 type QbtSearchStatusItem = {
 	id: number;
-	status: string;
+	status: QbtSearchStatus;
 	total: number;
 };
 
