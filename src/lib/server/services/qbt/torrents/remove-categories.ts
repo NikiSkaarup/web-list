@@ -1,10 +1,6 @@
-export default async (categories: Array<string>): Promise<void> => {
-	const categoriesToRemove = categories.join('%0A'); // %0A is \n
-	throw new Error('Not implemented');
-};
 import shared from '../shared';
 
-export default async (category: string, newCategory: string, newSavePath: string) => {
+export default async (categories: Array<string>) => {
 	const input = `${shared.baseUrl}/torrents/removeCategories`;
 	const categoriesToRemove = categories.join('%0A'); // %0A is \n
 	const response = await fetch(`${input}?categories=${categoriesToRemove}`, {
