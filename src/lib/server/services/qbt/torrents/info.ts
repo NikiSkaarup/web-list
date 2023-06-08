@@ -1,13 +1,12 @@
 import shared from '../shared';
 
 export default async (filters: QbtTorrentsInfoParameters) => {
-	// throw new Error('Not implemented');
 	const input = `${shared.baseUrl}/torrents/info`;
 
 	const response = await fetch(input, {
 		method: 'GET',
 		headers: {
-			'Content-Type': 'application/json'
+			accept: 'application/json'
 		}
 	});
 
