@@ -1,4 +1,4 @@
-<a class="btn btn-sm variant-ghost-surface" href="/qbit/v2"> qBit </a>
+<a class="btn btn-sm variant-ghost-surface" href="/qbt/v2"> qBit </a>
 <a class="btn btn-sm variant-ghost-surface" href="/search"> Search </a>
 <a
 	class="btn btn-sm variant-ghost-surface"
