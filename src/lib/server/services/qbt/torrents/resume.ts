@@ -2,7 +2,7 @@ import shared from '../shared';
 
 export default {
 	single: async (hashes: string[]) => {
-		const input = `${shared.baseUrl}/torrents/pause`;
+		const input = `${shared.baseUrl}/torrents/resume`;
 		const hashesToPause = hashes.join('|');
 		const response = await fetch(`${input}?hashes=${hashesToPause}`, {
 			method: 'GET',
@@ -19,7 +19,7 @@ export default {
 		return data;
 	},
 	all: async () => {
-		const input = `${shared.baseUrl}/torrents/pause`;
+		const input = `${shared.baseUrl}/torrents/resume`;
 		const response = await fetch(`${input}?hashes=all`, {
 			method: 'GET',
 			headers: {

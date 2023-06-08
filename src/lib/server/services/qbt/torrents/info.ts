@@ -13,6 +13,7 @@ export default async (filters: QbtTorrentsInfoParameters) => {
 	if (!response.ok) {
 		throw new Error(response.statusText);
 	}
+
 	const data: QbtTorrent[] = await response.json();
 	return data;
 };

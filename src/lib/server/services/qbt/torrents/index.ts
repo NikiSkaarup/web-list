@@ -42,6 +42,7 @@ import torrentDelete from './delete';
 import trackers from './trackers';
 import uploadLimit from './upload-limit';
 import webSeeds from './web-seeds';
+import resume from './resume';
 
 export default {
 	add,
@@ -82,6 +83,8 @@ export default {
 	removeTrackers,
 	renameFile,
 	renameFolder,
+	resume: resume.single,
+	resumeAll: resume.all,
 	setAutoManagement: setAutoManagement.single,
 	setAutoManagementAll: setAutoManagement.all,
 	setCategory: setCategory.single,
