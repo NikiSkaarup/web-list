@@ -1,10 +1,40 @@
+import shared from '../shared';
+
 export default {
-	single: async (hashes: string[], deleteFiles: boolean): Promise<void> => {
+	single: async (hashes: string[], deleteFiles: boolean) => {
+		const input = `${shared.baseUrl}/torrents/delete`;
 		const hashesToDelete = hashes.join('|');
-		throw new Error('Not implemented');
+		const response = await fetch(
+			`${input}?hashes=${hashesToDelete}&deleteFiles=${deleteFiles}`,
+			{
+				method: 'GET',
+				headers: {
+					accept: 'application/json'
+				}
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	},
-	all: async (deleteFiles: boolean): Promise<void> => {
-		// parameter "hashes" set to all
-		throw new Error('Not implemented');
+	all: async (deleteFiles: boolean) => {
+		const input = `${shared.baseUrl}/torrents/resume`;
+		const response = await fetch(`${input}?hashes=all&deleteFiles=${deleteFiles}`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	}
 };
