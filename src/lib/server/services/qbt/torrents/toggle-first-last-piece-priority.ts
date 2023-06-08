@@ -1,10 +1,39 @@
+import shared from '../shared';
+
 export default {
-	single: async (hashes: Array<QbtHash>): Promise<void> => {
+	single: async (hashes: Array<QbtHash>) => {
+		const input = `${shared.baseUrl}/torrents/toggleFirstLastPiecePrio`;
 		const hashesToToggleFirstLastPiecePriority = hashes.join('|');
-		throw new Error('Not implemented');
+		const response = await fetch(`${input}?hashes=${hashesToToggleFirstLastPiecePriority}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	},
-	all: async (): Promise<void> => {
-		// parameter "hashes" set to all
-		throw new Error('Not implemented');
+	all: async () => {
+		const input = `${shared.baseUrl}/torrents/toggleFirstLastPiecePrio`;
+		const response = await fetch(`${input}?hashes=all`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	}
 };
