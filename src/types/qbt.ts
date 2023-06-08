@@ -85,6 +85,14 @@ type QbtUploadSlotsBehavior = 0 | 1 | 2;
  */
 type QbtUtpTcpMixedMode = 0 | 1 | 2;
 
+type QbtBuildInfo = {
+	qt: string; // Qt version
+	libtorrent: string; // libtorrent version
+	boost: string; // boost version
+	openSSL: string; // OpenSSL version
+	bitness: number; // Application bitness (e.g. 64-bit)
+};
+
 type QbtPreferences = {
 	locale?: string; // Currently selected language (e.g. en_GB for English)
 	create_subfolder_enabled?: boolean; // True if a subfolder should be created when adding a torrent
@@ -111,7 +119,7 @@ type QbtPreferences = {
 	mail_notification_username?: string; // Username for smtp authentication
 	mail_notification_password?: string; // Password for smtp authentication
 	autorun_enabled?: boolean; // True if external program should be run after torrent has finished downloading
-	autorun_program?: string; // Program path/name/arguments to run if autorun_enabled is enabled; path is separated by slashes; you can use %f and %n arguments, which will be expanded by qBittorent as path_to_torrent_file and torrent_name (from the GUI; not the .torrent file name) respectively
+	autorun_program?: string; // Program path/name/arguments to run if autorun_enabled is enabled; path is separated by slashes; you can use %f and %n arguments, which will be expanded by qBittorrent as path_to_torrent_file and torrent_name (from the GUI; not the .torrent file name) respectively
 	queueing_enabled?: boolean; // True if torrent queuing is enabled
 	max_active_downloads?: number; // Maximum number of active simultaneous downloads
 	max_active_torrents?: number; // Maximum number of active simultaneous downloads and uploads
@@ -135,7 +143,7 @@ type QbtPreferences = {
 	stop_tracker_timeout?: number; // Timeout in seconds for a stopped announce request to trackers
 	enable_piece_extent_affinity?: boolean; // True if the advanced libtorrent option piece_extent_affinity is enabled
 	bittorrent_protocol?: QbtBitTorrentProtocol; // Bittorrent Protocol to use (see list of possible values below)
-	limit_utp_rate?: boolean; // True if [du]l_limit should be applied to uTP connections; this option is only available in qBittorent built against libtorrent version 0.16.X and higher
+	limit_utp_rate?: boolean; // True if [du]l_limit should be applied to uTP connections; this option is only available in qBittorrent built against libtorrent version 0.16.X and higher
 	limit_tcp_overhead?: boolean; // True if [du]l_limit should be applied to estimated TCP overhead (service data: e.g. packet headers)
 	limit_lan_peers?: boolean; // True if [du]l_limit should be applied to peers on the LAN
 	alt_dl_limit?: number; // Alternative global download speed limit in KiB/s
@@ -150,11 +158,11 @@ type QbtPreferences = {
 	pex?: boolean; // True if PeX is enabled
 	lsd?: boolean; // True if LSD is enabled
 	encryption?: number; // See list of possible values here below
-	anonymous_mode?: boolean; // If true anonymous mode will be enabled; read more here; this option is only available in qBittorent built against libtorrent version 0.16.X and higher
+	anonymous_mode?: boolean; // If true anonymous mode will be enabled; read more here; this option is only available in qBittorrent built against libtorrent version 0.16.X and higher
 	proxy_type?: QbtProxyType; // See list of possible values here below
 	proxy_ip?: string; // Proxy IP address or domain name
 	proxy_port?: number; // Proxy port
-	proxy_peer_connections?: boolean; // True if peer and web seed connections should be proxified; this option will have any effect only in qBittorent built against libtorrent version 0.16.X and higher
+	proxy_peer_connections?: boolean; // True if peer and web seed connections should be proxified; this option will have any effect only in qBittorrent built against libtorrent version 0.16.X and higher
 	proxy_auth_enabled?: boolean; // True proxy requires authentication; doesn't apply to SOCKS4 proxies
 	proxy_username?: string; // Username for proxy authentication
 	proxy_password?: string; // Password for proxy authentication
@@ -318,7 +326,7 @@ type QbtTorrent = {
 	completed: number; // Amount of transfer data completed (bytes)
 	completion_on: number; // Time (Unix Epoch) when the torrent completed
 	content_path: string; // Absolute path of torrent content (root path for multifile torrents, absolute file path for singlefile torrents)
-	dl_limit: number; // Torrent download speed limit (bytes/s). -1 if ulimited.
+	dl_limit: number; // Torrent download speed limit (bytes/s). -1 if unlimited.
 	dlspeed: number; // Torrent download speed (bytes/s)
 	downloaded: number; // Amount of data downloaded
 	downloaded_session: number; // Amount of data downloaded this session
@@ -351,7 +359,7 @@ type QbtTorrent = {
 	time_active: number; // Total active time (seconds)
 	total_size: number; // Total size (bytes) of all file in this torrent (including unselected ones)
 	tracker: string; // The first tracker with working status. Returns empty string if no tracker is working.
-	up_limit: number; // Torrent upload speed limit (bytes/s). -1 if ulimited.
+	up_limit: number; // Torrent upload speed limit (bytes/s). -1 if unlimited.
 	uploaded: number; // Amount of data uploaded
 	uploaded_session: number; // Amount of data uploaded this session
 	upspeed: number; // Torrent upload speed (bytes/s)
@@ -450,9 +458,9 @@ type QbtTorrentsTrackers = {
 	status: QbtTrackerStatus; // Tracker status. See the table below for possible values
 	tier: number; // Tracker priority tier. Lower tier trackers are tried before higher tiers. Tier numbers are valid when >= 0, < 0 is used as placeholder when tier does not exist for special entries (such as DHT).
 	num_peers: number; // Number of peers for current torrent, as reported by the tracker
-	num_seeds: number; // Number of seeds for current torrent, asreported by the tracker
+	num_seeds: number; // Number of seeds for current torrent, as reported by the tracker
 	num_leeches: number; // Number of leeches for current torrent, as reported by the tracker
-	num_downloaded: number; // Number of completed downlods for current torrent, as reported by the tracker
+	num_downloaded: number; // Number of completed downloads for current torrent, as reported by the tracker
 	msg: string; // Tracker message (there is no way of knowing what this message is - it's up to tracker admins)
 };
 
@@ -545,7 +553,7 @@ type QbtRSSRuleDef = {
 	smartFilter: boolean; // Enable smart episode filter
 	previouslyMatchedEpisodes: string[]; // The list of episode IDs already matched by smart filter
 	affectedFeeds: string[]; // The feed URLs the rule applied to
-	ignoreDays: number; // Ignore sunsequent rule matches
+	ignoreDays: number; // Ignore subsequent rule matches
 	lastMatch: string; // The rule last match time
 	addPaused: boolean; // Add matched torrent in paused mode
 	assignedCategory: string; // Assign category to the torrent
