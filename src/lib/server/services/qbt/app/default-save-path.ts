@@ -1,3 +1,16 @@
+import shared from '../shared';
+
 export default async () => {
-	throw new Error('Not implemented');
+	const input = `${shared.baseUrl}/app/defaultSavePath`;
+
+	const response = await fetch(input, {
+		method: 'GET'
+	});
+
+	if (!response.ok) {
+		throw new Error(response.statusText);
+	}
+
+	const data = await response.text();
+	return data;
 };

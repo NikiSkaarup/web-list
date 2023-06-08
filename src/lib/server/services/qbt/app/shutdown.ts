@@ -1,3 +1,11 @@
+import shared from '../shared';
+
 export default async () => {
-	throw new Error('Not implemented');
+	const input = `${shared.baseUrl}/app/shutdown`;
+
+	const response = await fetch(input, {
+		method: 'GET'
+	});
+
+	return response.status;
 };
