@@ -1,3 +1,19 @@
-export default async (path: string): Promise<void> => {
-	throw new Error('Not implemented');
+import shared from '../shared';
+
+export default async (path: string) => {
+	const input = `${shared.baseUrl}/rss/addFolder`;
+	const response = await fetch(`${input}?path=${path}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			accept: 'application/json'
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error(response.statusText);
+	}
+
+	const data = await response.text();
+	return data;
 };
