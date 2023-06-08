@@ -1,4 +1,16 @@
-export default async (lastKnownId: number = -1): Promise<QbtPeerLogItem[]> => {
-	throw new Error('Not implemented');
-	//return [];
+import shared from '../shared';
+
+export default async (lastKnownId: number = -1) => {
+	const input = `${shared.baseUrl}/log/peer`;
+
+	const response = await fetch(`${input}?last_known_id=${lastKnownId}`, {
+		method: 'GET'
+	});
+
+	if (!response.ok) {
+		throw new Error(response.statusText);
+	}
+
+	const data: QbtPeerLogItem[] = await response.json();
+	return data;
 };
