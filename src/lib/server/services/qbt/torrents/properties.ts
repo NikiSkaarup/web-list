@@ -1,6 +1,6 @@
 import shared from '../shared';
 
-export default async (hash: string) => {
+export default async (hash: QbtHash) => {
 	const input = `${shared.baseUrl}/torrents/properties`;
 
 	const response = await fetch(`${input}?hash=${hash}`, {

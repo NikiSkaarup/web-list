@@ -1,6 +1,6 @@
 import shared from '../shared';
 
-export default async (hash: string, indexes?: Array<string>) => {
+export default async (hash: QbtHash, indexes?: Array<string>) => {
 	const input = `${shared.baseUrl}/torrents/files`;
 
 	let params = `hash=${hash}`;

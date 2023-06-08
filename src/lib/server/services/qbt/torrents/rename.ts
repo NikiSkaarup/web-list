@@ -1,9 +1,8 @@
 import shared from '../shared';
 
-export default async (tags: QbtTorrentsTags) => {
-	const input = `${shared.baseUrl}/torrents/createTags`;
-	const tagsToDelete = tags.join(',');
-	const response = await fetch(`${input}?tags=${tagsToDelete}`, {
+export default async (hash: QbtHash, name: string) => {
+	const input = `${shared.baseUrl}/torrents/rename`;
+	const response = await fetch(`${input}?hash=${hash}&name=${encodeURIComponent(name)}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',

@@ -1,3 +1,5 @@
+type QbtHash = string;
+
 /**
  * Possible values of scan_dirs:
  * Value Description
@@ -333,7 +335,7 @@ type QbtTorrent = {
 	eta: number; // Torrent ETA (seconds)
 	f_l_piece_prio: boolean; // True if first last piece are prioritized
 	force_start: boolean; // True if force start is enabled for this torrent
-	hash: string; // Torrent hash
+	hash: QbtHash; // Torrent hash
 	last_activity: number; // Last time (Unix Epoch) when a chunk was downloaded/uploaded
 	magnet_uri: string; // Magnet URI corresponding to this torrent
 	max_ratio: number; // Maximum share ratio until torrent is stopped from seeding/uploading
@@ -368,12 +370,12 @@ type QbtTorrent = {
 type QbtSyncMainData = {
 	rid: number; // Response ID
 	full_update: boolean; // Whether the response contains all the data or partial data
-	torrents: { [key: string]: QbtTorrent }; // Property: torrent hash, value: same as torrent list
+	torrents: { [key: QbtHash]: QbtTorrent }; // Property: torrent hash, value: same as torrent list
 	torrents_removed: Array<string>; // List of hashes of torrents removed since last request
 	categories: object; // Info for categories added since last request
 	categories_removed: Array<string>; // List of categories removed since last request
-	tags: Array<string>; // List of tags added since last request
-	tags_removed: Array<string>; // List of tags removed since last request
+	tags: QbtTorrentsTags; // List of tags added since last request
+	tags_removed: QbtTorrentsTags; // List of tags removed since last request
 	server_state: object; // Global transfer info
 };
 
@@ -621,3 +623,7 @@ type QbtSearchPlugins = Array<QbtSearchPlugin>;
  * The response is 1 if alternative speed limits are enabled, 0 otherwise.
  */
 type QbtTransferSpeedLimitsMode = 0 | 1;
+
+type QbtDownloadLimitResponse = { [key: QbtHash]: number };
+
+type QbtUploadLimitResponse = { [key: QbtHash]: number };

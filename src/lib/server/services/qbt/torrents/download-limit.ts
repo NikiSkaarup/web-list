@@ -1,10 +1,37 @@
+import shared from '../shared';
+
 export default {
-	single: async (hashes: Array<string>): Promise<void> => {
-		const hashesToDownloadLimit = hashes.join('|');
-		throw new Error('Not implemented');
+	single: async (hashes: Array<QbtHash>) => {
+		const input = `${shared.baseUrl}/torrents/downloadLimit`;
+		const hashesToGetDownloadLimit = hashes.join('|');
+		const response = await fetch(`${input}?hashes=${hashesToGetDownloadLimit}`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data: QbtDownloadLimitResponse = await response.json();
+		return data;
 	},
-	all: async (): Promise<void> => {
-		// parameter "hashes" set to all
-		throw new Error('Not implemented');
+	all: async () => {
+		const input = `${shared.baseUrl}/torrents/downloadLimit`;
+		const response = await fetch(`${input}?hashes=all`, {
+			method: 'GET',
+			headers: {
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data: QbtDownloadLimitResponse = await response.json();
+		return data;
 	}
 };

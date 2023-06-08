@@ -1,5 +1,5 @@
 export default {
-	single: async (hashes: Array<string>, value: boolean): Promise<void> => {
+	single: async (hashes: Array<QbtHash>, value: boolean): Promise<void> => {
 		const hashesToSetForceStart = hashes.join('|');
 		throw new Error('Not implemented');
 	},

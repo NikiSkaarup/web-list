@@ -1,7 +1,7 @@
 import shared from '../shared';
 
 export default {
-	single: async (hashes: Array<string>) => {
+	single: async (hashes: Array<QbtHash>) => {
 		const input = `${shared.baseUrl}/torrents/recheck`;
 		const hashesToRecheck = hashes.join('|');
 		const response = await fetch(`${input}?hashes=${hashesToRecheck}`, {

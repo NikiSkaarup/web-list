@@ -1,7 +1,7 @@
 import shared from '../shared';
 
 export default {
-	single: async (hashes: Array<string>, deleteFiles: boolean) => {
+	single: async (hashes: Array<QbtHash>, deleteFiles: boolean) => {
 		const input = `${shared.baseUrl}/torrents/delete`;
 		const hashesToDelete = hashes.join('|');
 		const response = await fetch(

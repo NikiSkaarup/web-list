@@ -1,10 +1,41 @@
+import shared from '../shared';
+
 export default {
-	single: async (hashes: Array<string>, tags: Array<string>): Promise<void> => {
+	single: async (hashes: Array<QbtHash>, tags: QbtTorrentsTags) => {
+		const input = `${shared.baseUrl}/torrents/addTags`;
 		const hashesToAddTags = hashes.join('|');
-		throw new Error('Not implemented');
+		const tagsToAdd = tags.join(',');
+		const response = await fetch(`${input}?hashes=${hashesToAddTags}&tags=${tagsToAdd}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	},
-	all: async (tags: Array<string>): Promise<void> => {
-		// parameter "hashes" set to all
-		throw new Error('Not implemented');
+	all: async (tags: QbtTorrentsTags) => {
+		const input = `${shared.baseUrl}/torrents/addTags`;
+		const tagsToAdd = tags.join(',');
+		const response = await fetch(`${input}?hashes=all&tags=${tagsToAdd}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				accept: 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.text();
+		return data;
 	}
 };

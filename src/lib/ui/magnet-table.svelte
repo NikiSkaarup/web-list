@@ -5,7 +5,7 @@
 
 	export let items: Array<{
 		id: number;
-		hash: string;
+		hash: QbtHash;
 		title: string;
 		dt: string;
 		cat: string;

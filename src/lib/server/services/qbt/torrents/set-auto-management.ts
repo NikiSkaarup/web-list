@@ -1,5 +1,5 @@
 export default {
-	single: async (hashes: Array<string>, enable: boolean): Promise<void> => {
+	single: async (hashes: Array<QbtHash>, enable: boolean): Promise<void> => {
 		const hashesToSetAutoManagement = hashes.join('|');
 		throw new Error('Not implemented');
 	},

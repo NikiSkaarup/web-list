@@ -1,5 +1,5 @@
 export default {
-	single: async (hashes: Array<string>): Promise<void> => {
+	single: async (hashes: Array<QbtHash>): Promise<void> => {
 		const hashesToToggleFirstLastPiecePriority = hashes.join('|');
 		throw new Error('Not implemented');
 	},
