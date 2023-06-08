@@ -1,14 +1,64 @@
 import shared from '../shared';
 
+const append = (
+	body: FormData,
+	key: string,
+	value:
+		| string
+		| number
+		| bigint
+		| boolean
+		| Blob
+		| undefined
+		| null
+		| Array<string>
+		| Array<number>,
+	splitter: string = '|'
+) => {
+	if (value === undefined || value === null) return;
+
+	if (Array.isArray(value)) {
+		body.append(key, value.join(splitter));
+		return;
+	}
+
+	switch (typeof value) {
+		case 'string':
+			if (value.length > 0) {
+				body.append(key, value);
+			}
+			break;
+		case 'number':
+		case 'boolean':
+		case 'bigint':
+			body.append(key, value.toString());
+			break;
+		case 'object':
+			body.append(key, value);
+			break;
+	}
+};
+
 const addTorrent = async (params: QbtTorrentsAddParams) => {
 	const body = new FormData();
-	body.append('urls', params.urls);
-	// body.append('savepath', savePath);
-	// body.append('cookie', cookie);
-	// body.append('category', category);
-	// body.append('skip_checking', skip_checking.toString());
-	body.append('paused', params.paused ?? 'false');
-	// body.append('root_folder', root_folder.toString());
+
+	append(body, 'urls', params.urls);
+	append(body, 'torrents', params.torrents);
+	append(body, 'savepath', params.savepath);
+	append(body, 'cookie', params.cookie);
+	append(body, 'category', params.category);
+	append(body, 'tags', params.tags, ',');
+	append(body, 'skip_checking', params.skip_checking);
+	append(body, 'paused', params.paused);
+	append(body, 'root_folder', params.root_folder);
+	append(body, 'rename', params.rename);
+	append(body, 'upLimit', params.upLimit);
+	append(body, 'dlLimit', params.dlLimit);
+	append(body, 'ratioLimit', params.ratioLimit);
+	append(body, 'seedingTimeLimit', params.seedingTimeLimit);
+	append(body, 'autoTMM', params.autoTMM);
+	append(body, 'sequentialDownload', params.sequentialDownload);
+	append(body, 'firstLastPiecePrio', params.firstLastPiecePrio);
 
 	const input = `${shared}/torrents/add`;
 
