@@ -1,14 +1,30 @@
 <script>
 	import QbtList from '$lib/ui/qbt/qbt-list.svelte';
-	import { CodeBlock } from '@skeletonlabs/skeleton';
+	import { Accordion, AccordionItem, CodeBlock } from '@skeletonlabs/skeleton';
 	export let data;
 </script>
 
 <QbtList torrents={data.torrents} />
 
-<div class="container mx-auto space-y-8 p-8">
-	<CodeBlock language={'json'} code={JSON.stringify(data, null, 2)} lineNumbers={true} />
-</div>
+{#if data.torrents.length > 0}
+	<div class="container mx-auto space-y-8 p-8">
+		<h5>
+			{data.torrents.length} torrent{data.torrents.length > 1 ? 's' : ''} found
+		</h5>
+		<Accordion>
+			{#each data.torrents as torrent (torrent.hash)}
+				<AccordionItem>
+					<svelte:fragment slot="summary">
+						<p>{torrent.name}</p>
+					</svelte:fragment>
+					<svelte:fragment slot="content">
+						<CodeBlock language={'json'} code={JSON.stringify(torrent, null, 4)} />
+					</svelte:fragment>
+				</AccordionItem>
+			{/each}
+		</Accordion>
+	</div>
+{/if}
 
 <!--
 <div class="container mx-auto space-y-8 p-8">
