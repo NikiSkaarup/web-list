@@ -48,8 +48,6 @@
 		if (categories.length > 0) params += `&${categories}`;
 		if (groupImdb) params += `&group-imdb=${groupImdb}`;
 
-		console.log({ params, groupImdb });
-
 		await goto($page.url.pathname + params, {
 			keepFocus: true
 		});

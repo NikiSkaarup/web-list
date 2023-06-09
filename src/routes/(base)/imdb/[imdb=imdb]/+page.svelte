@@ -45,5 +45,11 @@
 		}}
 	/>
 
-	<Paginator bind:settings on:page={onChange} on:amount={onChange} />
+	<Paginator
+		bind:settings
+		on:page={onChange}
+		on:amount={onChange}
+		controlVariant="variant-ghost-surface"
+		active="variant-ghost-primary"
+	/>
 </div>

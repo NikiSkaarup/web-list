@@ -1,18 +1,21 @@
 import { dev } from '$app/environment';
-import database from '$lib/server/database';
-import { items } from '$lib/server/database/schema';
-import { sql } from 'drizzle-orm';
+
+let i = 1;
 
 export const handle = async ({ event, resolve }) => {
-	if (!global.libSQLClient) {
-		database.db
-			.select({ count: sql`count(*)` })
-			.from(items)
-			.get();
+	if (dev) {
+		const id = String(i++).padStart(3, '0');
+		console.log(`Request ${id} started`);
+		const requestStart = performance.now();
+		const result = await resolve(event);
+		const requestEnd = performance.now();
+		const duration = requestEnd - requestStart;
+		console.log(`Request ${id} took ${duration.toFixed(2)}ms`);
+		return result;
 	}
 
-	event.locals.requestStart = performance.now();
-	return resolve(event);
+	const result = await resolve(event);
+	return result;
 };
 
 export const handleFetch = async ({ request, fetch }) => {

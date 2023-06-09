@@ -5,10 +5,7 @@ import type { LibSQLDatabase } from 'drizzle-orm/libsql';
 
 declare global {
 	namespace App {
-		interface Locals {
-			requestStart: number;
-			requestDuration: number;
-		}
+		interface Locals {}
 		// interface Error {}
 		// interface PageData {}
 		// interface Platform {}

@@ -422,8 +422,8 @@ type QbtTorrentsInfoSort =
 	| 'content_path'
 	| 'dl_limit'
 	| 'dlspeed'
-	| 'downloaded'
 	| 'downloaded_session'
+	| 'downloaded'
 	| 'eta'
 	| 'f_l_piece_prio'
 	| 'force_start'
@@ -439,11 +439,11 @@ type QbtTorrentsInfoSort =
 	| 'num_seeds'
 	| 'priority'
 	| 'progress'
-	| 'ratio'
 	| 'ratio_limit'
+	| 'ratio'
 	| 'save_path'
-	| 'seeding_time'
 	| 'seeding_time_limit'
+	| 'seeding_time'
 	| 'seen_complete'
 	| 'seq_dl'
 	| 'size'
@@ -454,8 +454,8 @@ type QbtTorrentsInfoSort =
 	| 'total_size'
 	| 'tracker'
 	| 'up_limit'
-	| 'uploaded'
 	| 'uploaded_session'
+	| 'uploaded'
 	| 'upspeed';
 
 type QbtTorrentsInfoParameters = {
