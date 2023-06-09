@@ -56,11 +56,12 @@
 	{:else if key === 'priority'}
 		{value}
 	{:else if key === 'progress'}
-		{value.toFixed(2)}%
+		{@const progress = value * 100}
+		{progress.toFixed(2)}%
 	{:else if key === 'ratio_limit'}
 		{value}
 	{:else if key === 'ratio'}
-		{value}
+		{value.toFixed(2)}
 	{:else if key === 'seeding_time_limit'}
 		{#if value === -1}
 			n/a
