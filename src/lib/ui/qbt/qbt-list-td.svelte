@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ProgressBar } from '@skeletonlabs/skeleton';
 	import QbtTorrentFormatter from './qbt-torrent-formatter.svelte';
 
 	export let key: QbtTorrentsInfoSort;
@@ -97,7 +98,7 @@
 	</td>
 {:else if key === 'name'}
 	<td class="table-cell-fit font-mono" {title}>
-		<span class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-[30rem]">
+		<span class="overflow-hidden text-ellipsis inline-block whitespace-nowrap max-w-[20rem]">
 			<QbtTorrentFormatter {key} {value} />
 		</span>
 	</td>
@@ -123,7 +124,10 @@
 	</td>
 {:else if key === 'progress'}
 	<td class="table-cell-fit font-mono whitespace-nowrap" {title}>
-		<QbtTorrentFormatter {key} {value} />
+		<div>
+			<QbtTorrentFormatter {key} {value} />
+			<ProgressBar meter="bg-secondary-500" value={Number(value) * 100} />
+		</div>
 	</td>
 {:else if key === 'ratio_limit'}
 	<td class="table-cell-fit font-mono whitespace-nowrap" {title}>
