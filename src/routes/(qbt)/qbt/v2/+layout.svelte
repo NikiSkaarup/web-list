@@ -18,13 +18,15 @@
 		autoModeWatcher,
 		Toast,
 		Modal,
-		Drawer
+		Drawer,
+		drawerStore
 	} from '@skeletonlabs/skeleton';
 	import { storeHighlightJs, storePopup } from '@skeletonlabs/skeleton';
 	import hljs from 'highlight.js';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import Trail from '$lib/ui/trail.svelte';
 	import Lead from '$lib/ui/lead.svelte';
+	import QbtTorrentDrawer from '$lib/ui/qbt/qbt-torrent-drawer.svelte';
 
 	storeHighlightJs.set(hljs);
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
@@ -34,7 +36,11 @@
 	{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
 </svelte:head>
 
-<Drawer />
+<Drawer>
+	{#if $drawerStore.id === 'qbt-torrent-drawer'}
+		<QbtTorrentDrawer />
+	{/if}
+</Drawer>
 <Modal />
 <Toast />
 <AppShell>
