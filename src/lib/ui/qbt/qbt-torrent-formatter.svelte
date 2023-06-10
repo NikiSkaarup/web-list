@@ -14,7 +14,11 @@
 	{:else if key === 'amount_left'}
 		{@html bytesToHumanReadable(value)}
 	{:else if key === 'availability'}
-		{value}
+		{#if value === -1}
+			n/a
+		{:else}
+			{value.toFixed(2)}
+		{/if}
 	{:else if key === 'completed'}
 		{@html bytesToHumanReadable(value)}
 	{:else if key === 'completion_on'}

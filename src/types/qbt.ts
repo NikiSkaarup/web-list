@@ -355,7 +355,7 @@ type QbtTorrent = {
 	seen_complete: number; // Time (Unix Epoch) when this torrent was last seen complete
 	seq_dl: boolean; // True if sequential download is enabled
 	size: number; // Total size (bytes) of files selected for download
-	state: string; // Torrent state. See table here below for the possible values
+	state: QbtTorrentState; // Torrent state. See table here below for the possible values
 	super_seeding: boolean; // True if super seeding is enabled
 	tags: string; // Comma-concatenated tag list of the torrent
 	time_active: number; // Total active time (seconds)
