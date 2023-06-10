@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { InputChip, SlideToggle, drawerStore } from '@skeletonlabs/skeleton';
+	import { InputChip, ProgressBar, SlideToggle, drawerStore } from '@skeletonlabs/skeleton';
 	import { slide } from 'svelte/transition';
 	let torrent: QbtTorrent = $drawerStore.meta.torrent;
 	let fields = { ...torrent };
@@ -29,6 +29,9 @@
 			<h3 class="text-lg">Edit torrent</h3>
 			<p class="text-sm text-gray-400 max-w-full" title={torrent.name}>{torrent.name}</p>
 			<p class="text-sm text-gray-400 max-w-full" title={torrent.hash}>{torrent.hash}</p>
+			<div class="pt-1">
+				<ProgressBar meter="variant-filled-secondary" value={fields.progress * 100} />
+			</div>
 		</legend>
 		<input class="input" type="hidden" name="hash" bind:value={torrent.hash} />
 		<div class="flex-grow flex flex-col space-y-4 overflow-y-auto px-4">
@@ -84,6 +87,7 @@
 					name="added_on"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="added_on"
 					bind:value={fields.added_on}
 				/>
@@ -94,6 +98,7 @@
 					name="amount_left"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="amount_left"
 					bind:value={fields.amount_left}
 				/>
@@ -107,6 +112,7 @@
 					name="availability"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="availability"
 					bind:value={fields.availability}
 				/>
@@ -128,6 +134,7 @@
 					name="completed"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="completed"
 					bind:value={fields.completed}
 				/>
@@ -138,6 +145,7 @@
 					name="completion_on"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="completion_on"
 					bind:value={fields.completion_on}
 				/>
@@ -178,6 +186,7 @@
 					name="downloaded"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="downloaded"
 					bind:value={fields.downloaded}
 				/>
@@ -188,6 +197,7 @@
 					name="downloaded_session"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="downloaded_session"
 					bind:value={fields.downloaded_session}
 				/>
@@ -198,6 +208,7 @@
 					name="eta"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="eta"
 					bind:value={fields.eta}
 				/>
@@ -214,6 +225,7 @@
 					name="hash"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="hash"
 					bind:value={fields.hash}
 				/>
@@ -224,6 +236,7 @@
 					name="last_activity"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="last_activity"
 					bind:value={fields.last_activity}
 				/>
@@ -234,6 +247,7 @@
 					name="magnet_uri"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="magnet_uri"
 					bind:value={fields.magnet_uri}
 				/>
@@ -264,6 +278,7 @@
 					name="num_complete"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="num_complete"
 					bind:value={fields.num_complete}
 				/>
@@ -274,6 +289,7 @@
 					name="num_incomplete"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="num_incomplete"
 					bind:value={fields.num_incomplete}
 				/>
@@ -284,6 +300,7 @@
 					name="num_leechs"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="num_leechs"
 					bind:value={fields.num_leechs}
 				/>
@@ -294,6 +311,7 @@
 					name="num_seeds"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="num_seeds"
 					bind:value={fields.num_seeds}
 				/>
@@ -306,16 +324,6 @@
 					type="text"
 					placeholder="priority"
 					bind:value={fields.priority}
-				/>
-			</label>
-			<label class="label">
-				<span>progress</span>
-				<input
-					name="progress"
-					class="input"
-					type="text"
-					placeholder="progress"
-					bind:value={fields.progress}
 				/>
 			</label>
 			<label class="label">
@@ -374,6 +382,7 @@
 					name="seen_complete"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="seen_complete"
 					bind:value={fields.seen_complete}
 				/>
@@ -387,6 +396,7 @@
 					name="size"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="size"
 					bind:value={fields.size}
 				/>
@@ -397,6 +407,7 @@
 					name="state"
 					class="input"
 					type="text"
+					readonly={true}
 					placeholder="state"
 					bind:value={fields.state}
 				/>
