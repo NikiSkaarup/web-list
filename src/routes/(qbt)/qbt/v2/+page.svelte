@@ -1,18 +1,21 @@
 <script>
+	import { sync, torrents } from '$lib/stores/maindata.store';
 	import QbtList from '$lib/ui/qbt/qbt-list.svelte';
 	import { Accordion, AccordionItem, CodeBlock } from '@skeletonlabs/skeleton';
 	export let data;
+
+	sync(data.maindata);
 </script>
 
-<QbtList torrents={data.torrents} />
+<QbtList torrents={$torrents} />
 
-{#if data.torrents.length > 0}
+{#if $torrents.length > 0}
 	<div class="container mx-auto space-y-8 p-8">
 		<h5>
-			{data.torrents.length} torrent{data.torrents.length > 1 ? 's' : ''} found
+			{$torrents.length} torrent{$torrents.length > 1 ? 's' : ''} found
 		</h5>
 		<Accordion>
-			{#each data.torrents as torrent (torrent.hash)}
+			{#each $torrents as torrent (torrent.hash)}
 				<AccordionItem>
 					<svelte:fragment slot="summary">
 						<p>{torrent.name}</p>

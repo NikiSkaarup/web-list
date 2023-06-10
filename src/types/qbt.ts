@@ -1,3 +1,9 @@
+type QbtClient = {
+	clientId: string;
+	sid: string;
+	date: number;
+};
+
 type QbtHash = string;
 
 /**
@@ -7,7 +13,7 @@ type QbtHash = string;
  * 1 Download to the default save path
  * "/path/to/download/to" Download to this path
  */
-type QbtScanDirs = { [key: string]: 0 | 1 | string };
+type QbtScanDirs = Record<string, 0 | 1 | string>;
 
 /**
  * Possible values of scheduler_days:
@@ -367,16 +373,49 @@ type QbtTorrent = {
 	upspeed: number; // Torrent upload speed (bytes/s)
 };
 
+type QbtSyncMainDataCategory = {
+	name: string; // Category name
+	savePath: string; // Category save path
+};
+
+type QbtServerState = {
+	alltime_dl: number;
+	alltime_ul: number;
+	average_time_queue: number;
+	connection_status: QbtConnectionStatus;
+	dht_nodes: number;
+	dl_info_data: number;
+	dl_info_speed: number;
+	dl_rate_limit: number;
+	free_space_on_disk: number;
+	global_ratio: string;
+	queued_io_jobs: number;
+	queueing: boolean;
+	read_cache_hits: string;
+	read_cache_overload: string;
+	refresh_interval: number;
+	total_buffers_size: number;
+	total_peer_connections: number;
+	total_queued_size: number;
+	total_wasted_session: number;
+	up_info_data: number;
+	up_info_speed: number;
+	up_rate_limit: number;
+	use_alt_speed_limits: boolean;
+	write_cache_overload: string;
+};
+
 type QbtSyncMainData = {
 	rid: number; // Response ID
 	full_update: boolean; // Whether the response contains all the data or partial data
-	torrents: { [key: QbtHash]: QbtTorrent }; // Property: torrent hash, value: same as torrent list
-	torrents_removed: Array<string>; // List of hashes of torrents removed since last request
-	categories: object; // Info for categories added since last request
+	torrents: Record<QbtHash, QbtTorrent>; // Property: torrent hash, value: same as torrent list
+	torrents_removed: Array<QbtHash>; // List of hashes of torrents removed since last request
+	categories: Record<string, QbtSyncMainDataCategory>; // Info for categories added since last request
 	categories_removed: Array<string>; // List of categories removed since last request
 	tags: QbtTorrentsTags; // List of tags added since last request
 	tags_removed: QbtTorrentsTags; // List of tags removed since last request
-	server_state: object; // Global transfer info
+	server_state: QbtServerState; // Global transfer info
+	trackers: Record<string, Array<QbtHash>>; // List of trackers
 };
 
 type QbtConnectionStatus = 'connected' | 'firewalled' | 'disconnected';
@@ -589,23 +628,15 @@ type QbtTorrentsCategory = {
 	savePath: string;
 };
 
-type QbtTorrentsCategories = {
-	[key: string]: QbtTorrentsCategory;
-};
+type QbtTorrentsCategories = Record<string, QbtTorrentsCategory>;
 
 type QbtTorrentsTag = string;
 
 type QbtTorrentsTags = Array<QbtTorrentsTag>;
 
-type QbtRSSItem =
-	| string
-	| {
-			[key: string]: string;
-	  };
+type QbtRSSItem = string | Record<string, string>;
 
-type QbtRSSItems = {
-	[key: string]: QbtRSSItem;
-};
+type QbtRSSItems = Record<string, QbtRSSItem>;
 
 type QbtRSSRuleDef = {
 	enabled: boolean; // Whether the rule is enabled
@@ -628,13 +659,9 @@ type QbtRSSRule = {
 	ruleDef: QbtRSSRuleDef;
 };
 
-type QbtRSSRules = {
-	[key: string]: QbtRSSRule;
-};
+type QbtRSSRules = Record<string, QbtRSSRule>;
 
-type QbtRSSMatchingArticles = {
-	[key: string]: Array<string>;
-};
+type QbtRSSMatchingArticles = Record<string, Array<string>>;
 
 type QbtSearchStartResponse = {
 	id: number;
@@ -685,6 +712,6 @@ type QbtSearchPlugins = Array<QbtSearchPlugin>;
  */
 type QbtTransferSpeedLimitsMode = 0 | 1;
 
-type QbtDownloadLimitResponse = { [key: QbtHash]: number };
+type QbtDownloadLimitResponse = Record<QbtHash, number>;
 
-type QbtUploadLimitResponse = { [key: QbtHash]: number };
+type QbtUploadLimitResponse = Record<QbtHash, number>;

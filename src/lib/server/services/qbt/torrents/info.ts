@@ -1,6 +1,6 @@
 import shared from '../shared';
 
-export default async (filters: QbtTorrentsInfoParameters) => {
+export default async (filters: QbtTorrentsInfoParameters = {}) => {
 	const input = `${shared.baseUrl}/torrents/info`;
 
 	const params = new URLSearchParams();

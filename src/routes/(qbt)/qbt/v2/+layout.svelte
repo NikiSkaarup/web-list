@@ -27,9 +27,31 @@
 	import Trail from '$lib/ui/trail.svelte';
 	import Lead from '$lib/ui/lead.svelte';
 	import QbtTorrentDrawer from '$lib/ui/qbt/qbt-torrent-drawer.svelte';
+	import IconRefreshOff from '@tabler/icons-svelte/dist/svelte/icons/IconRefreshOff.svelte';
+	import IconRefresh from '@tabler/icons-svelte/dist/svelte/icons/IconRefresh.svelte';
+	import { page } from '$app/stores';
+	import { pauseSync, startSync, stopSync, syncing, url } from '$lib/stores/maindata.store';
+	import { browser } from '$app/environment';
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
 
 	storeHighlightJs.set(hljs);
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+	if (browser) {
+		url.set($page.url.origin);
+	}
+
+	beforeNavigate(() => {
+		if ($syncing) {
+			pauseSync.set(true);
+		}
+	});
+
+	afterNavigate(() => {
+		if ($syncing) {
+			pauseSync.set(false);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -51,6 +73,17 @@
 			</svelte:fragment>
 			<svelte:fragment slot="default"><span /></svelte:fragment>
 			<svelte:fragment slot="trail">
+				{#if $page.url.pathname === '/qbt/v2'}
+					{#if $syncing}
+						<button class="btn btn-sm variant-ghost-surface" on:click={stopSync}>
+							<IconRefreshOff size={20} />
+						</button>
+					{:else}
+						<button class="btn btn-sm variant-ghost-surface" on:click={startSync}>
+							<IconRefresh size={20} />
+						</button>
+					{/if}
+				{/if}
 				<Trail />
 			</svelte:fragment>
 		</AppBar>

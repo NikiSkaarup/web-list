@@ -1,10 +1,18 @@
-import qbt from '$lib/server/services/qbt/index';
+import qbt from '$lib/server/services/qbt';
 
 export const load = async (event) => {
-	const torrents = await qbt.torrents.info({});
+	await qbt.auth.login(event.locals.clientId);
+
+	const result = await event.fetch('/api/qbt/v2/maindata/0', {
+		method: 'get',
+		headers: {
+			cookie: `web-list-client-id=${event.locals.clientId}`
+		}
+	});
+	const maindata: QbtSyncMainData = await result.json();
 
 	return {
-		torrents
+		maindata
 	};
 };
 

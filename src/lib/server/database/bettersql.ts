@@ -6,7 +6,6 @@
 // const db_verbose = env.DATABASE_VERBOSE === 'true';
 // const verbose = (...data: Array<any>) => {
 // 	if (!dev || !db_verbose) return;
-// 	console.log(...data);
 // };
 
 // const client = global.betterSQLiteClient || new Database(env.DATABASE_URL, { verbose });

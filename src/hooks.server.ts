@@ -1,16 +1,47 @@
 import { dev } from '$app/environment';
+import { env } from '$env/dynamic/private';
+import qbt from '$lib/server/services/qbt';
+import clientManager from '$lib/server/services/qbt/auth/client-manager';
+import logger from '$lib/server/utils/logger';
+import { nanoid } from 'nanoid';
 
-let i = 1;
+// needs to automatically be deleted after sessionTimeout currently it is a memory leak
+const indexes = new Map<string, number>();
+
+const _timeout = parseInt(env.QBITTORRENT_SESSION_TIMEOUT);
+const sessionTimeout = !isNaN(_timeout) ? _timeout : 3600;
 
 export const handle = async ({ event, resolve }) => {
+	let clientId = event.cookies.get('web-list-client-id');
+	if (!clientId) {
+		clientId = nanoid();
+	}
+
+	event.locals.clientId = clientId;
+	event.cookies.set('web-list-client-id', clientId, {
+		path: '/',
+		sameSite: 'strict',
+		maxAge: sessionTimeout,
+		secure: !dev
+	});
+
+	await clientManager.get(event.locals.clientId, qbt.auth.login);
+
+	let index = indexes.get(clientId);
+	if (index === undefined) {
+		index = 0;
+		indexes.set(clientId, index);
+	}
+
 	if (dev) {
-		const id = String(i++).padStart(3, '0');
-		console.log(`Request ${id} started`);
+		indexes.set(clientId, index + 1);
+		const id = String(index).padStart(3, '0');
+		logger.debug(`${clientId} // ${id} started`);
 		const requestStart = performance.now();
 		const result = await resolve(event);
 		const requestEnd = performance.now();
 		const duration = requestEnd - requestStart;
-		console.log(`Request ${id} took ${duration.toFixed(2)}ms`);
+		logger.debug(`${clientId} // ${id} took ${duration.toFixed(2)}ms`);
 		return result;
 	}
 
@@ -32,16 +63,13 @@ export const handleFetch = async ({ request, fetch }) => {
 export const handleError = ({ error, event }) => {
 	let message = 'Whoops!';
 	if (dev) {
-		console.error(error);
 		if (error instanceof Error) {
 			message = error.message;
 		} else if (typeof error === 'string') {
 			message = error;
 		}
 
-		if (event.request.url.includes('debug')) {
-			console.log(event);
-		}
+		logger.error(message, event);
 	}
 
 	return {

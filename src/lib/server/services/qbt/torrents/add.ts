@@ -1,3 +1,4 @@
+import logger from '$lib/server/utils/logger';
 import shared from '../shared';
 
 const append = (
@@ -84,7 +85,8 @@ const addTorrent = async (params: QbtTorrentsAddParams) => {
 			response: data
 		};
 	} catch (error: any) {
-		console.log('error', error);
+		logger.error('failed to add torrent', error);
+
 		return {
 			error: {
 				message: error.toString()
