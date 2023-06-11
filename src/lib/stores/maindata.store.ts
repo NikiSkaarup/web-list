@@ -9,6 +9,7 @@ pauseSync.subscribe((value) => {
 
 export let torrents: Writable<Array<QbtTorrent>> = writable([]);
 export let categories: Writable<Array<QbtSyncMainDataCategory>> = writable([]);
+export let tags: Writable<Array<QbtTorrentsTag>> = writable([]);
 
 export let maindata: Writable<QbtSyncMainData | null> = writable(null);
 let _maindata: QbtSyncMainData | null = null;
@@ -31,8 +32,8 @@ maindata.subscribe((value) => {
 		return torrent;
 	});
 	torrents.set(torrentsToSet);
-
 	categories.set(Object.values(value.categories));
+	tags.set(value.tags);
 });
 
 export let url: Writable<string | undefined> = writable(undefined);
@@ -59,6 +60,22 @@ const handleCategories = (
 	return Object.fromEntries([...currentItems, ...newItems]);
 };
 
+const handleTags = (
+	items: QbtSyncMainData['tags'],
+	added: QbtSyncMainData['tags'] | undefined,
+	removed: QbtSyncMainData['tags_removed'] | undefined
+) => {
+	const filteredItems = items.filter((tag) => !removed?.includes(tag));
+
+	if (added === undefined) return filteredItems;
+
+	const newItems = added.filter((tag) => !filteredItems.includes(tag));
+
+	filteredItems.push(...newItems);
+
+	return filteredItems;
+};
+
 const handleTorrents = (
 	items: QbtSyncMainData['torrents'],
 	added: QbtSyncMainData['torrents'] | undefined,
@@ -70,23 +87,31 @@ const handleTorrents = (
 
 	if (added === undefined) return items;
 
-	const newItems = Object.entries(added).map(([hash, torrent]) => [
-		hash,
-		{
-			...torrent,
-			hash
-		}
-	]);
+	const newItems = new Map(
+		Object.entries(added).map(([hash, torrent]) => [
+			hash,
+			{
+				...torrent,
+				hash
+			}
+		])
+	);
 
-	const currentItems = Object.entries(items).map(([hash, torrent]) => [
-		hash,
-		{
-			...torrent,
-			hash
-		}
-	]);
+	const currentItems = new Map(Object.entries(items));
 
-	return Object.fromEntries([...currentItems, ...newItems]);
+	for (const [hash, torrent] of newItems.entries()) {
+		const currentTorrent = currentItems.get(hash);
+		if (currentTorrent !== undefined) {
+			currentItems.set(hash, {
+				...currentTorrent,
+				...torrent
+			});
+		} else {
+			currentItems.set(hash, torrent);
+		}
+	}
+
+	return Object.fromEntries(currentItems.entries());
 };
 
 const handleTrackers = (
@@ -182,7 +207,9 @@ export let sync = (data: QbtSyncMainData) => {
 				data.torrents_removed
 			);
 
-			handleTrackers(current.trackers, data.trackers, current.torrents);
+			current.trackers = handleTrackers(current.trackers, data.trackers, current.torrents);
+
+			current.tags = handleTags(current.tags, data.tags, data.tags_removed);
 
 			current.server_state = handleServerState(current.server_state, data.server_state);
 

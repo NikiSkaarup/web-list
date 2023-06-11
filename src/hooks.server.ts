@@ -1,15 +1,11 @@
 import { dev } from '$app/environment';
-import { env } from '$env/dynamic/private';
 import qbt from '$lib/server/services/qbt';
-import clientManager from '$lib/server/services/qbt/auth/client-manager';
+import clientManager, { sessionTimeout } from '$lib/server/services/qbt/auth/client-manager';
 import logger from '$lib/server/utils/logger';
 import { nanoid } from 'nanoid';
 
 // needs to automatically be deleted after sessionTimeout currently it is a memory leak
 const indexes = new Map<string, number>();
-
-const _timeout = parseInt(env.QBITTORRENT_SESSION_TIMEOUT);
-const sessionTimeout = !isNaN(_timeout) ? _timeout : 3600;
 
 export const handle = async ({ event, resolve }) => {
 	let clientId = event.cookies.get('web-list-client-id');
@@ -18,6 +14,7 @@ export const handle = async ({ event, resolve }) => {
 	}
 
 	event.locals.clientId = clientId;
+
 	event.cookies.set('web-list-client-id', clientId, {
 		path: '/',
 		sameSite: 'strict',

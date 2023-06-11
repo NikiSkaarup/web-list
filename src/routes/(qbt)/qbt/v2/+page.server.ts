@@ -1,16 +1,6 @@
-import qbt from '$lib/server/services/qbt';
-
 export const load = async (event) => {
-	await qbt.auth.login(event.locals.clientId);
-
-	const result = await event.fetch('/api/qbt/v2/maindata/0', {
-		method: 'get',
-		headers: {
-			cookie: `web-list-client-id=${event.locals.clientId}`
-		}
-	});
+	const result = await event.fetch('/api/qbt/v2/maindata/0');
 	const maindata: QbtSyncMainData = await result.json();
-
 	return {
 		maindata
 	};
@@ -55,7 +45,6 @@ export const actions = {
 				response: data
 			};
 		} catch (error: any) {
-			console.log('error', error);
 			return {
 				error: {
 					message: error.toString()

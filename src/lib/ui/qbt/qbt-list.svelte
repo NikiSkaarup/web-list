@@ -27,10 +27,10 @@
 					keys.indexOf(keyB as QbtTorrentsInfoSort)
 			) as Array<[QbtTorrentsInfoSort, string | number | boolean | QbtHash]>;
 
-	const openDrawer = (torrent: QbtTorrent) => {
+	const openDrawer = (hash: QbtHash) => {
 		drawerStore.open({
 			id: 'qbt-torrent-drawer',
-			meta: { torrent },
+			meta: { hash },
 			position: 'right',
 			bgDrawer: 'backdrop-blur-md bg-surface-900/70 text-white',
 			bgBackdrop:
@@ -73,7 +73,7 @@
 								<button
 									class="btn btn-sm variant-ghost-surface"
 									type="button"
-									on:click={() => openDrawer(torrent)}
+									on:click={() => openDrawer(torrent.hash)}
 								>
 									<IconDots />
 								</button>

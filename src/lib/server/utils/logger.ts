@@ -24,22 +24,22 @@ const levels: Record<string, Record<string, number>> = {
 };
 
 const logger = winston.createLogger({
-	level: 'info',
+	level: 'debug',
 	levels: levels.syslog,
 	format: format.combine(
 		format.timestamp(),
-		format.label({ label: 'logger' }),
+		// format.label({ label: 'logger' }),
 		winston.format.json()
 	),
-	defaultMeta: { service: 'web-list' },
+	// defaultMeta: { service: 'web-list' },
 	transports: [new winston.transports.File({ filename: 'logs.log' })]
 });
 
 const devTransport = new winston.transports.Console({
 	level: 'debug',
 	format: winston.format.combine(
-		format.timestamp(),
-		format.label({ label: 'dev' }),
+		// format.timestamp(),
+		// format.label({ label: 'dev' }),
 		// winston.format.padLevels({
 		// 	levels: levels.syslog
 		// }),

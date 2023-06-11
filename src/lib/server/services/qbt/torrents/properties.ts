@@ -1,3 +1,4 @@
+import logger from '$lib/server/utils/logger';
 import shared from '../shared';
 
 export default async (hash: QbtHash) => {
@@ -18,7 +19,7 @@ export default async (hash: QbtHash) => {
 		const data: QbtTorrentsProperties = await response.json();
 		return data;
 	} catch (e) {
-		console.log(e);
+		logger.error('failed to get properties of torrent, torrent hash likely invalid', hash, e);
 		throw new Error('torrent hash likely invalid');
 	}
 };

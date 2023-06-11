@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/private';
 import logger from '$lib/server/utils/logger';
 import shared from '../shared';
-import clientManager from './client-manager';
+import clientManager, { sessionRefreshMs } from './client-manager';
 
 const headers = new Headers();
 headers.append('Referer', shared.baseUrl);
@@ -10,10 +10,6 @@ headers.append('Host', shared.baseUrl.split('://')[1]);
 headers.append('Accept', '*/*');
 headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-const _timeout = parseInt(env.QBITTORRENT_SESSION_TIMEOUT);
-const sessionTimeout = !isNaN(_timeout) ? _timeout : 3600;
-const sessionRefresh = sessionTimeout / 10;
-
 export default async (clientId: string, skipCheck: boolean = false) => {
 	const input = `${shared.baseUrl}/auth/login`;
 
@@ -21,7 +17,7 @@ export default async (clientId: string, skipCheck: boolean = false) => {
 
 	if (!skipCheck) {
 		const client = await clientManager.get(clientId);
-		if (client !== undefined && client.date > now + sessionRefresh) {
+		if (client !== undefined && client.date > now + sessionRefreshMs) {
 			return client;
 		}
 	}
