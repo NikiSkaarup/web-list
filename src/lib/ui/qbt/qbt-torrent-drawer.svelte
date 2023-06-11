@@ -18,7 +18,7 @@
 	let hash: QbtHash = $drawerStore.meta.hash;
 	let torrent = $torrents.find((torrent) => torrent.hash === hash);
 	let fields: typeof torrent = torrent ? { ...torrent } : undefined;
-	let existingTags: Array<string> = splitTags(torrent);
+	let existingTags: Array<string> = splitTags(fields);
 	let existingCategories: Array<string> = $categories.map((category) => category.name);
 	let tagsInput = '';
 
@@ -29,8 +29,8 @@
 
 	const reset = () => {
 		if (torrent === undefined || hash === undefined) return;
-		fields = torrent;
-		existingTags = splitTags(torrent);
+		fields = { ...torrent };
+		existingTags = splitTags(fields);
 	};
 
 	function onTagSelect(event: any) {
