@@ -100,34 +100,6 @@
 						on:selection={onTagSelect}
 					/>
 				</div>
-				<!-- <div class="flex flex-col">
-					<SlideToggle
-						name="newTags"
-						bind:checked={addNewTags}
-						disabled={newTags.length > 0}
-					>
-						<span class="select-none">
-							{#if newTags.length > 0}
-								disabled until new tags is empty
-							{:else if addNewTags}
-								Don't add new tags
-							{:else}
-								Add new tags
-							{/if}
-						</span>
-					</SlideToggle>
-					{#if newTags.length > 0 || addNewTags}
-						<div transition:slide|local={{ axis: 'y' }} class="label pt-2">
-							<span>Tags (new)</span>
-							<InputChip
-								bind:value={newTags}
-								name="tags"
-								placeholder="Enter new tags and add them to the torrent"
-								chips="variant-filled-secondary"
-							/>
-						</div>
-					{/if}
-				</div> -->
 				<label class="label">
 					<span>added_on</span>
 					<input
