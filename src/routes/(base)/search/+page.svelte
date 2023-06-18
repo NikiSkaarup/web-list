@@ -1,18 +1,16 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import MagnetTable from '$lib/ui/magnet-table.svelte';
 	import { Paginator, SlideToggle } from '@skeletonlabs/skeleton';
 	export let data;
 
-	$: items = data.items;
 	let div: HTMLDivElement;
+
+	$: items = data.items;
 	$: sort = {
 		by: data.by,
 		asc: data.asc
-	} as {
-		by: sortBy;
-		asc: boolean;
 	};
 
 	$: settings = {
@@ -40,7 +38,6 @@
 	};
 
 	const onChange = async () => {
-		loading = true;
 		const categories = getCategories();
 		let params = `?by=${sort.by}&asc=${sort.asc}&limit=${settings.limit}&offset=${settings.offset}`;
 
@@ -51,7 +48,6 @@
 		await goto($page.url.pathname + params, {
 			keepFocus: true
 		});
-		loading = false;
 	};
 
 	const clear = () => {
@@ -67,6 +63,14 @@
 		settings = settings;
 		onChange();
 	};
+
+	beforeNavigate(() => {
+		loading = true;
+	});
+
+	afterNavigate(() => {
+		loading = false;
+	});
 </script>
 
 <div class="container mx-auto space-y-8 p-8">
@@ -123,7 +127,8 @@
 		bind:settings
 		on:page={onChange}
 		on:amount={onChange}
-		controlVariant="variant-ghost-surface"
+		disabled={loading}
+		controlVariant="variant-ghost-surface font-mono"
 		active="variant-ghost-primary"
 	/>
 </div>
