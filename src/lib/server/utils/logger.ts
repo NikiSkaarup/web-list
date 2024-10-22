@@ -1,30 +1,13 @@
-import { dev } from '$app/environment';
-import winston, { format } from 'winston';
+import { configure, getAnsiColorFormatter, getConsoleSink, getLogger } from "@logtape/logtape";
 
-const logger = winston.createLogger({
-	level: 'info',
-	format: format.combine(
-		format.timestamp(),
-		format.label({ label: 'logger' }),
-		winston.format.json()
-	),
-	defaultMeta: { service: 'web-list' },
-	transports: [
-		new winston.transports.File({ filename: 'error.log', level: 'error' }),
-		new winston.transports.File({ filename: 'all.log' })
-	]
+await configure({
+	sinks: { console: getConsoleSink({ formatter: getAnsiColorFormatter() }) },
+	loggers: [
+		{ category: ['web-list'], level: process.env.DEVELOPMENT === 'true' ? 'debug' : 'info', sinks: ['console'] },
+		{ category: ['logtape', 'meta'], level: 'fatal', sinks: ['console'] },
+	],
 });
 
-if (dev) {
-	logger.add(
-		new winston.transports.Console({
-			format: winston.format.combine(
-				format.timestamp(),
-				format.label({ label: 'dev mode' }),
-				winston.format.prettyPrint({ colorize: true })
-			)
-		})
-	);
-}
+const log = getLogger(['web-list']);
 
-export default logger;
+export default log;

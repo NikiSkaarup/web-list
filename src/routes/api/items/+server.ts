@@ -60,9 +60,9 @@ const getTotal = async (
 	}
 
 	if (wheres.length > 1) {
-		query = query.where(and(...wheres));
+		return query.where(and(...wheres)).get();
 	} else if (wheres.length > 0) {
-		query = query.where(wheres[0]);
+		return query.where(wheres[0]).get();
 	}
 
 	return query.get();
@@ -113,13 +113,46 @@ const getItems = async (
 
 	if (groupImdb) {
 		wheres.push(isNotNull(items.imdb));
-		query = query.groupBy(items.imdb);
+		if (wheres.length > 1) {
+			return query
+				.groupBy(items.imdb)
+				.where(and(...wheres))
+				.orderBy(getOrderBy(order, asc))
+				.limit(limit)
+				.offset(offset * limit)
+				.all();
+		} else if (wheres.length > 0) {
+			return query
+				.groupBy(items.imdb)
+				.where(wheres[0])
+				.orderBy(getOrderBy(order, asc))
+				.limit(limit)
+				.offset(offset * limit)
+				.all();
+		} else {
+			return query
+				.groupBy(items.imdb)
+				.orderBy(getOrderBy(order, asc))
+				.limit(limit)
+				.offset(offset * limit)
+				.all();
+		}
 	}
 
 	if (wheres.length > 1) {
-		query = query.where(and(...wheres));
+		return query
+			.where(and(...wheres))
+			.orderBy(getOrderBy(order, asc))
+			.limit(limit)
+			.offset(offset * limit)
+			.all();
 	} else if (wheres.length > 0) {
-		query = query.where(wheres[0]);
+		return query
+			.where(wheres[0])
+			.orderBy(getOrderBy(order, asc))
+			.limit(limit)
+			.offset(offset * limit)
+			.all();
 	}
 
 	return query
@@ -143,10 +176,10 @@ export const GET = async (event) => {
 	const offsetString = event.url.searchParams.get('offset') || '0';
 	const searchText = event.url.searchParams.get('search-text');
 
-	const limit = parseInt(limitString);
-	if (isNaN(limit)) return json({ error: 'Invalid limit' });
-	const offset = parseInt(offsetString);
-	if (isNaN(offset)) return json({ error: 'Invalid offset' });
+	const limit = Number.parseInt(limitString);
+	if (Number.isNaN(limit)) return json({ error: 'Invalid limit' });
+	const offset = Number.parseInt(offsetString);
+	if (Number.isNaN(offset)) return json({ error: 'Invalid offset' });
 	if (imdb !== null && !imdbMatcher.test(imdb)) return json({ error: 'Invalid imdb' });
 
 	const items = await getItems(
@@ -161,5 +194,5 @@ export const GET = async (event) => {
 	);
 	const total = await getTotal(searchCategories, searchText, groupImdb, imdb);
 
-	return json({ items, total: total.count });
+	return json({ items, total: total?.count ?? 0 });
 };

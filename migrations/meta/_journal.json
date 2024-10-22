@@ -1,12 +1,12 @@
 {
-  "version": "5",
+  "version": "7",
   "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1686002323076,
-      "tag": "0000_fancy_vertigo",
+      "version": "6",
+      "when": 1729584613438,
+      "tag": "0000_chemical_infant_terrible",
       "breakpoints": true
     }
   ]

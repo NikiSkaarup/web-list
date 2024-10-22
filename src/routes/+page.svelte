@@ -19,7 +19,8 @@
 		offset: data.offset,
 		limit: data.limit,
 		size: data.total,
-		amounts: [10, 25, 50, 100]
+		amounts: [10, 25, 50, 100],
+		page: 1
 	};
 
 	$: searchText = data.searchText ?? '';
@@ -47,8 +48,6 @@
 		if (searchText.length > 0) params += `&search-text=${searchText}`;
 		if (categories.length > 0) params += `&${categories}`;
 		if (groupImdb) params += `&group-imdb=${groupImdb}`;
-
-		console.log({ params, groupImdb });
 
 		await goto($page.url.pathname + params, {
 			keepFocus: true

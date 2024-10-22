@@ -18,7 +18,8 @@
 		offset: data.offset,
 		limit: data.limit,
 		size: data.total,
-		amounts: [10, 25, 50, 100]
+		amounts: [10, 25, 50, 100],
+		page: 1
 	};
 
 	let loading = false;

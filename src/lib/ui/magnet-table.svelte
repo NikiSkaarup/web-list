@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import IconMagnet from '@tabler/icons-svelte/dist/svelte/icons/IconMagnet.svelte';
 	import MagnetTh from './magnet-th.svelte';
 
 	export let items: {
@@ -49,7 +48,7 @@
 	{#if loading}
 		<div class="flex flex-col gap-1" style="height: {tableHeight ?? 642}px">
 			{#each Array(limit + 1) as _}
-				<div class="placeholder animate-pulse flex-1" />
+				<div class="placeholder animate-pulse flex-1"></div>
 			{/each}
 		</div>
 	{:else}
@@ -103,7 +102,8 @@
 						</td>
 						<td class="table-cell-fit">
 							<a class="anchor" href="magnet:?xt=urn:btih:{item.hash}">
-								<IconMagnet size={20} />
+								<!-- <IconMagnet size={20} /> -->
+								M
 							</a>
 						</td>
 					</tr>

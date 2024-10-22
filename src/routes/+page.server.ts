@@ -26,7 +26,7 @@ export const load = async (event) => {
 			: categories.map((cat) => ({
 					name: cat,
 					checked: searchCats.includes(cat)
-			  }));
+				}));
 
 	return {
 		items: result.items,
@@ -34,8 +34,8 @@ export const load = async (event) => {
 		categories: searchCategories,
 		by: by as sortBy,
 		asc,
-		limit: isNaN(limit) ? 10 : limit > 0 ? limit : 10,
-		offset: isNaN(offset) ? 0 : offset,
+		limit: Number.isNaN(limit) ? 10 : limit > 0 ? limit : 10,
+		offset: Number.isNaN(offset) ? 0 : offset,
 		searchText,
 		groupImdb
 	};

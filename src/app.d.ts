@@ -1,7 +1,5 @@
 import type { Client } from '@libsql/client';
 import type { LibSQLDatabase } from 'drizzle-orm/libsql';
-// import type BetterSqlite3 from 'better-sqlite3';
-// import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 
 declare global {
 	namespace App {
@@ -16,8 +14,8 @@ declare global {
 
 	var libSQLClient: Client;
 	var libSQLDb: LibSQLDatabase;
-	// var betterSQLiteClient: BetterSqlite3.Database;
-	// var betterSQLiteDb: BetterSQLite3Database;
+	var libSQLInterval: NodeJS.Timeout | string | number | undefined;
+	var libSQLIntervalRunning: boolean;
 }
 
 export {};
